@@ -1,0 +1,20 @@
+@import "../../common/index.wxss";
+.index-bd{width: 750rpx;overflow: hidden; padding:0;float: left;}
+
+#thebook{position: relative;float: left;width: 700rpx;padding: 25rpx;background-color: #fff;}
+#bookimg{position: relative;float: left;width: 150rpx;height: 210rpx;margin: 0 275rpx 6px 275rpx;box-shadow: 3px 3px 3px #ddd}
+#thebook text{position: relative;float: left;width: 400rpx;margin: 20rpx 150rpx;color: #999;font-size: 26rpx;text-align: center;}
+
+#borrower{position: relative;float: left;margin:60rpx 35rpx 40rpx 35rpx;
+width: 680rpx;padding: 20rpx 0rpx;background-color: #fff;}
+#userimg{position:absolute;top:-30rpx;left:-10rpx;width:120rpx;height:120rpx;border-radius:50%;z-index:9;border:#fff solid 10rpx;}
+#userinfo{position:relative;float:left;width:600rpx;margin:50rpx 20rpx 15rpx 20rpx;padding:20rpx 20rpx;border:#f4f4f4 solid 1px;border-radius: 10rpx;background-color:#f9f9f9;}
+#userinfo text{position:relative;float:left;width:340rpx;text-align:left;font-size:24rpx;color:#999;margin:25rpx 0 10rpx 0;padding:0 30rpx;text-align: right;}
+#userinfo text:last-child{float: right;font-size: 22rpx;margin-top: 10rpx;}
+#comment{position:relative;float:left;width:530rpx;margin:20rpx 0 10rpx 0;padding:18rpx 30rpx;background-color:#eee;font-size:28rpx;color:#666;border-radius:20rpx;}
+button{width: 580rpx;margin: 20rpx 50rpx;float: left;}
+
+#bookbox{position: relative;float: left;width: 150rpx; background-color: #eee;padding: 24rpx;}
+#bookbox image{position: relative;float: left;width: 150rpx;height: 210rpx;margin: 0;}
+
+.status{position: relative;float: left;width: 620rpx;margin:10rpx 30rpx;text-align: right;font-size: 24rpx;color: #666;min-height:24rpx;}

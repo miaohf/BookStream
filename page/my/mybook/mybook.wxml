@@ -1,0 +1,43 @@
+
+<view class="index">
+  <view class="index-bd">
+	  <view id="useravatar">
+	  		<image style="	" mode="" src="{{user.avatar}}" binderror="" bindload=""></image>
+	  		<view id="totalnum">共{{num}}本书</view>
+	  </view>	
+
+  <view id="bookarea">
+	<view wx:for-items="{{books}}" wx:key="{{item.id}}" wx:for-index="idx" class="books" data-index="{{idx}}" data-id="{{item.id}}" data-status="{{item.status}}" catchtap="menutap">
+		<image style="" mode="" src="{{item.image_m}}" binderror="" bindload=""></image>
+		<view hidden="{{item.status==0?false:true}}" class="hiddenbook"></view>
+		<view hidden="{{item.status==1?false:true}}" class="showbook"></view>
+		<view hidden="{{item.status==2?false:true}}" class="waitbook"></view>
+		<view hidden="{{item.status==3?false:true}}" class="outbook"></view>
+		<text> {{ item.name }} </text>	
+	</view>
+	<view class="books">
+		<view id="addbox" bindtap="iflocationjump">
+			<view id="addbtn">
+				<image style="" mode="" src="/image/my/add.png" binderror="" bindload=""></image>
+			</view>
+		</view>
+	</view>
+
+	<view hidden="{{is_operate_panel}}" id="operate_panel" bindtap="hideoperatebox">
+		<view class="menu"  animation="{{animationData}}" catchtap="catchit">
+			<view id="title">选择操作项</view>
+			<navigator url="/page/exchange/book/book?id={{chosenid}}" hover-class="">
+			<view id="checkbook" class="oper_options">查看书页</view>	
+			</navigator>		
+			<!-- <view id="booksetting" class="oper_options">书本设置</view> -->
+			<navigator url="/page/my/mybook/changestatus?id={{chosenid}}&status={{chosenstatus}}&index={{chosenindex}}" hover-class=""  bindtap="hideoperatebox">
+			<view id="changestatus" class="oper_options oper_optionslast">更改状态</view>	
+			</navigator>
+		</view>
+	</view>
+
+  </view>
+	
+
+  </view>
+</view>

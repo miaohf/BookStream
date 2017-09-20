@@ -1,0 +1,45 @@
+
+<view class="index">
+  <view class="index-bd">
+    <view id="personal_head">
+      <view id="mid_box">
+        <image style="" mode="" src="{{ta.avatar}}" binderror="" bindload=""></image>
+        <view id="myname">{{ta.name}}</view>
+      </view>
+      <view id="score_box">
+        <view id="booknum"><text>{{ta.booknum}}</text><text class="peipao">\n本书</text></view>
+        <view id="device_line"></view>
+        <view id="score"><text>{{ta.ordernum}}</text><text class="peipao">\n排名</text></view>
+      </view>
+    </view>
+
+<!-- 排行 积分 会员等级等信息 -->
+  <navigator url="../email/email?toopenid={{ta.openid}}" hover-class="" style="width: 750rpx;float: left;">
+  <view id="sendmail">
+    <image style="" mode="" src="/image/my/mail.png" binderror="" bindload=""></image>向{{ta.gender==1?'他':'她'}}发送私信
+  </view>
+  </navigator>
+  
+  <view id="bookarea">
+  <view wx:for-items="{{books}}" wx:key="{{item.id}}" class="books">
+    <navigator url="/page/exchange/book/book?id={{item.id}}" hover-class="">
+    <view hidden="{{item.status==1?true:false}}" class="hiddenbook"></view>
+    <view hidden="{{item.status==1?false:true}}" class="showbook"></view>
+    <image style="" mode="" src="{{item.image_m}}" binderror="" bindload=""></image>
+    <text> {{ item.name }} </text>  
+    </navigator>    
+  </view>
+
+
+    
+  </view>
+    
+    
+
+
+
+
+   
+
+  </view>
+</view>

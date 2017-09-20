@@ -1,0 +1,61 @@
+@import "../../common/index.wxss";
+.index-bd{width: 750rpx; padding:0;float: left;height: 101%;}
+
+.index{height: 89%;float: left;margin-top: 16%;}
+
+.orderbox{
+	width:750rpx;
+	margin:0;
+	float:left;
+	border-radius: 12rpx;
+}
+.boxtitle{
+	width:710rpx;
+	background-color:#57b5fb;
+	height:82rpx;
+	font-size:28rpx;
+	line-height:82rpx;
+	color:#fff;
+	float:left;
+	border-radius:20rpx 20rpx 0 0;
+	padding:0 20rpx;
+	font-weight:bold;
+}
+.box_inner{
+	width: 710rpx;
+	padding: 20rpx;
+	float: left;
+	background-color:#fff;
+	margin: 8rpx 0 22rpx 0;
+}
+.order_items{
+	width: 670rpx;
+	float: left;
+	padding: 20rpx;
+}
+.order_items:last-child{border:none;}
+
+.order_items image{width: 80rpx;height: 80rpx;border-radius: 50%;float: left;}
+.order_num{width: 40rpx;height: 40rpx;background-color: #57b5fb;border-radius: 50%;text-align: center;line-height: 40rpx;float: left;color: #fff;margin: 30rpx 30rpx 30rpx 0rpx;font-weight: bold;font-size: 22rpx}
+.itemname{width: 200rpx;float: left;color: #666;font-size: 28rpx;height: 32rpx;line-height: 32rpx;text-align: left;font-weight: 700;margin:8rpx 10rpx 2rpx 30rpx;}
+.commenttime{width: 400rpx;float: left;color: #999;font-size: 22rpx;height: 28rpx;line-height: 28rpx;text-align: left;font-weight: 300;margin:8rpx 10rpx 8rpx 30rpx;}
+
+
+
+.comment_wrapper{width:620rpx;float:left;padding:20rpx 30rpx;margin:0 15rpx 10rpx 15rpx;background-color:#f4f4f4;border-radius:8rpx;}
+.comment_wrapper image{width: 80rpx;height: 120rpx;float: left;}
+.comment_wrapper .comment_des{font-size: 28rpx;line-height: 38rpx;color: #212121;text-align: left;float: left;padding: 0 20rpx;width: 500rpx}
+.commenter{color: #727f88;margin-left:8rpx;}
+.comment{color: #6a6a6a}
+
+.createtime{float: right;font-size: 20rpx;color: #999}
+
+#bar{width: 750rpx;margin:0;float: left;height: 102rpx;background-color: #fff;position: fixed;z-index: 8;left: 0;top: 0;}
+#bar0,#bar1{width: 373rpx;float: left;padding: 35rpx 0;text-align: center;color: #666;font-size: 32rpx;line-height: 40rpx;height: 52rpx;}
+#bar_guider{position: absolute;z-index: 9;width: 275rpx;left: 50rpx;bottom: 0;background-color: #008eff;height: 8rpx;border-radius: 4rpx}
+
+
+#device_line{width: 1rpx;border-right: #f4f4f4 solid 1px;height: 50rpx;margin-top: 26rpx;float: left}
+
+.doneline{position:relative;float:left;width:250rpx;border-left:#eee solid 160rpx;border-right:#eee solid 160rpx;text-align:center;color:#ccc;line-height:1px;margin:40rpx 90rpx;font-size:28rpx;}
+navigator{float: left;}

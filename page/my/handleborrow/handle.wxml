@@ -1,0 +1,38 @@
+
+<view class="index">
+  <view class="index-bd">
+
+	<view id="borrower">
+		<view class="status" wx:if="{{info.status==0}}"></view>
+		<view class="status" wx:if="{{info.status==1}}">已同意借出</view>
+		<view class="status" wx:if="{{info.status==2}}">已拒绝借出</view>
+		<view class="status" wx:if="{{info.status==3}}">已忽略此条</view>
+		<image style="" mode="" src="{{info.useravatar}}" id="userimg"></image>
+		<view id="userinfo">
+			
+			<view id="bookbox">
+				<image style="" mode="" src="{{info.bookimg}}" id="bookimg"></image>
+			</view>
+			<text>申请人：{{info.borrowname}}</text>
+			<text>性别：{{info.gender}}</text>
+			<text>书友藏书：{{info.booksnum}}</text>
+			<text>书名：{{ info.bookname }}</text>			
+			<view id="comment">借书留言:{{info.comment}}</view>
+			<text>{{info.time}}</text>
+		</view>
+		<view id="toset" wx:if="{{info.status==0}}">
+		<form bindsubmit="handleit" report-submit="true" id="borrowre">
+			<button type="primary" size="default"  form-type="submit" data-choose="1">同意借出</button>
+			<button type="warn" size="default"  form-type="submit" data-choose="2">拒绝借出</button>
+			<button type="warn" size="default"  form-type="submit" data-choose="3">忽略此条</button>
+      	</form>
+		</view>
+			
+		
+		<button type="primary" size="default"  bindtap="" id="">看{{info.gender==1?'他':'她'}}主页</button>
+	</view>
+
+
+
+  </view>
+</view>

@@ -1,0 +1,54 @@
+@import "../../common/index.wxss";
+.index-bd{width: 750rpx;overflow: hidden; padding:0;float: left;}
+
+#mebox{
+	position:relative;
+	float:left;
+	background-color:#fff;
+	width:560rpx;
+	margin:120rpx 40rpx 100rpx 50rpx;
+	border-radius:20rpx;
+	padding:100rpx 50rpx;
+	font-size:28rpx;
+	font-weight:200;
+	color:#888;
+	box-shadow: 3px 3px 3px #eee;
+}
+#mebox image:first-child{
+	position:absolute;
+	top:-50rpx;
+	left:-25rpx;
+	z-index:9;
+	width:110rpx;
+	height:110rpx;
+	border-radius:50%;
+}
+#mebox image:last-child{
+	position:absolute;
+	bottom:-50rpx;
+	left:280rpx;
+	z-index:9;
+	width:100rpx;
+	height:100rpx;
+	border-radius:50%;
+	box-shadow: 3px 3px 3px #eee;
+}
+
+#bottomtext{
+	float:left;
+	color:#999;
+	font-size:24rpx;
+	width:250rpx;
+	border-left:#eee solid 160rpx;
+	border-right:#eee solid 160rpx;
+	line-height:1px;
+	position:relative;
+	text-align:center;
+	margin:40rpx 90rpx;
+	font-weight: 100
+}
+.label{
+	width:140rpx;
+    display:inline;
+    float:left;
+}

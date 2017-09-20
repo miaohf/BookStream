@@ -1,0 +1,160 @@
+
+<view class="index" style="float: left;">
+  <view class="index-bd">
+
+    <view class="bookdetail">
+      <view id="info">
+        <text> {{ book.name }} \n</text>
+        <text> {{ book.average }}星 {{book.numRaters}}枚评星 \n</text>
+        <text> {{ book.author }}著 \n</text>
+        <text>
+          <block wx:for="{{book.tags}}" wx:key="{{index}}">{{item}}/</block>
+        </text> 
+        <!-- <text> \n约{{ book.letternum }}字</text>  --> 
+      </view>
+      <image id="bookimg" style="" mode="" src="{{book.image_m}}" binderror="" bindload=""></image>
+
+      
+      <view id="des" style="height: {{commonjs.desheight}}">
+        <text> 简介 \n</text>
+        <text style="color:{{commonjs.desl_color}}"> {{ book.des_l }} </text>
+      </view>
+      <view id="arrow_down" bindtap="showall">
+        <image style="" mode="" src="/image/{{commonjs.direction}}_arrow.png" binderror="" bindload="" ></image> 
+      </view> 
+
+
+      <view class="operbtn">
+        <button hidden="{{hasstar?true:false}}" type="primary" size="default"  bindtap="takestar" id="changebtn">我要评星</button>
+        <button hidden="{{hasstar?false:true}}" type="primary" size="default" id="changebtn">已评{{nowstarnum}}星</button>
+      </view> 
+      <view class="operbtn">
+      <block wx:if="{{book.status==0}}">
+        <button type="default" size="default"  bindtap="setDisabled" id="noforout">本书不外借</button>
+      </block>
+      <block wx:if="{{book.status==1}}">
+        <button type="default" size="default"  bindtap="iwantborrow" id="bollowbtn">我要借书</button>
+      </block>
+      <block wx:if="{{(book.status==2)||(book.status==3)}}">
+        <button type="default" size="default"  bindtap="setDisabled" id="borrowing">被借中</button>
+      </block>
+
+        
+        <!-- <view id="bollownum">{{book.bollownum}}人借阅</view> -->
+      </view>  
+      
+
+    </view>
+
+    
+
+    <view class="comment_area">
+      <view class="comment_title">书友笔记</view>
+      <block wx:for-items="{{comments}}" wx:key="{{item.id}}">
+        <view class="comment">
+          <image style="" mode="" src="{{item.avatar}}" binderror="" bindload=""></image> 
+          <!-- {{item.name}} -->
+          <view class="commentword">{{item.comment}}</view>
+          <view class="comment_time"> {{ item.created_at }} </view>   
+        </view>
+      </block>
+
+      
+
+      <view id="comment_btn" bindtap="alertcommentbox">
+        <image id="record_voice" style="" mode="" src="/image/comments-smiley.png" binderror="" bindload=""></image>
+        <view id="comment_text">我来评论</view>   
+      </view>
+
+    </view>
+
+    <!-- <view class="usertail">
+    <view id="usertail_title">漂流轨迹</view>
+      <image style="" mode="" src="{{book.user_avatar}}" binderror="" bindload=""></image>
+      <image style="" mode="" src="{{book.user_avatar}}" binderror="" bindload=""></image>
+      <image style="" mode="" src="{{book.user_avatar}}" binderror="" bindload=""></image>
+      <text> {{ '……' }} </text>    
+    </view> -->
+
+    <view class="userinfo">
+    <view class="comment_title">当前所有者</view>
+      <navigator url="../../my/otheruser/other?openid={{book.belong_user}}" hover-class="">
+        <image id="useravatar" style="" mode="" src="{{book.user_avatar}}" binderror="" bindload=""></image>
+      </navigator>
+      
+      <view id="userinfotext">
+        <text>{{book.user}}\n</text>
+        <text>银牌会员\n</text>
+        <text>8本藏书 156个赞 56条评论\n</text>
+      </view>
+      <view id="userstory">
+        <text> {{ '书友与本书的故事：' }} </text>{{book.story}}
+      </view>
+    </view>
+
+    <!-- <view class="recomand_area">
+    <view class="comment_title">猜你喜欢</view>
+      <block wx:for-items="{{recomand}}" wx:key="{{item.id}}">
+      <view class="recomand_books">
+        <image style="" mode="" src="{{item.img}}" binderror="" bindload=""></image>
+        <view class="recomand_text">{{item.name}}</view>
+      </view>
+      
+      </block>
+    </view> -->
+
+    
+  </view>
+
+<view hidden="{{is_comment_panel}}" id="comment_panel"  bindtap="hidecommentbox">
+  <view id="commentbox" animation="{{animationData}}" catchtap="catchit">
+    <form bindsubmit="sendcomment">
+      <view id="boxleft">
+        <text> {{ '添加评论' }} </text>      
+        <input placeholder="" name="comment" value="{{commentvalue}}" type="text" cursor-spacing="10"/>
+      </view>
+      <view id="boxright">
+        <button id="sendcomment"  form-type="submit">
+          发送
+        </button>
+      </view>
+      </form>
+    </view>
+</view>
+
+<view hidden="{{is_average_panel}}" id="average_panel"  bindtap="hideaveragebox">
+  <view id="averagebox" animation="{{animationData2}}" catchtap="catchit">
+      <view id="boxleft2">
+        <text> {{ '给书籍评星' }} </text>      
+        <view id="stars">
+          <block wx:for="{{stars}}" wx:key="{{item.starnum}}">
+          <image class="star" data-star="{{item.starnum}}" catchtap="clickstar" mode="" src="{{item.starnum>nowstarnum?greystar:yellowstar}}"></image>
+          </block>
+        </view>
+      </view>
+      <view id="boxright2">
+        <button id="sendscore" catchtap="scoreit">
+          评定
+        </button>
+      </view>
+  </view>
+</view>
+
+
+<view hidden="{{is_borrow_panel}}" id="borrow_panel"  bindtap="hideborrowbox">
+  <view id="borrowbox" animation="{{animationData3}}" catchtap="catchit">
+  <form bindsubmit="borrowit" report-submit="true" id="borrowcomment">
+      <view id="boxleft3">
+        <text> {{ '给书友说句话呀，提高借书概率' }} </text>      
+        <input placeholder="" name="borrow" value="{{borrowvalue}}" type="text" cursor-spacing="10"/>
+      </view>
+      <view id="boxright3">
+        <button id="sendborrow" form-type="submit">
+          评定
+        </button>
+      </view>
+      </form>
+  </view>
+</view>
+  
+</view>

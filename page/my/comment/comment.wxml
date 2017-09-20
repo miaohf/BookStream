@@ -1,0 +1,66 @@
+<view id="bar">
+  	<view id="bar0" data-bar="0" bindtap="bar">收到评论</view>
+		<view id="device_line"></view>
+  	<view id="bar1" data-bar="1" bindtap="bar">发出评论</view>
+  	<view id="bar_guider" animation="{{animationData}}"></view>
+  </view>
+
+  
+<scroll-view class="index" scroll-y="true" scroll-top="{{scrolltop}}" bindscrolltolower="scrolldown" bindscrolltoupper="refresh"  upper-threshold="1">
+  
+  <view class="index-bd">
+  
+	<view  class="orderbox" style="display: {{bar==0 ? 'block' : 'none'}}">
+		
+		<block wx:for-items="{{recieves}}" wx:key="{{item.id}}">
+		<view class="box_inner">
+			<navigator url="../my/otheruser/other?openid={{item.openid}}" hover-class="">
+			<view class="order_items">
+				<image style="" mode="" src="{{item.avatar}}" binderror="" bindload=""></image>
+				<view class="itemname">{{item.name}}</view>
+				<view class="commenttime">{{item.created_at}}</view>
+			</view>
+			<view class="comment_wrapper">
+				<image style="" mode="" src="{{item.bookimg}}" binderror="" bindload=""></image>
+				<view class="comment_des">
+					<text>《{{item.bookname}}》 \n</text>
+					<text class="commenter">{{item.name}}</text>
+					<text>评论：</text>
+					<text class="comment">{{item.comment}}</text>
+				</view>
+			</view>
+			</navigator>
+			</view>
+		</block>
+		
+		<view class="doneline" hidden="{{isdone==0?true:false}}">
+	        我也是有底线的
+	    </view>
+	</view>
+	
+
+
+	<view  class="orderbox" style="display: {{bar==0 ? 'none' : 'block'}}">
+		
+		<block wx:for-items="{{sends}}" wx:key="{{item.id}}">
+		<view class="box_inner">
+			<navigator url="../my/otheruser/other?openid={{item.openid}}" hover-class="">
+			<view class="comment_wrapper">
+				<image style="" mode="" src="{{item.bookimg}}" binderror="" bindload=""></image>
+				<view class="comment_des">
+					<text>评论：《{{item.bookname}}》 \n</text>
+					<text class="comment">{{item.comment}}\n</text>
+					<text class="createtime"> {{ item.created_at }} </text>		
+				</view>
+			</view>
+			</navigator>
+			</view>
+		</block>
+		
+		<view class="doneline" hidden="{{isdone2==0?true:false}}">
+	        我也是有底线的
+	    </view>
+	</view>
+
+  </view>
+</scroll-view>

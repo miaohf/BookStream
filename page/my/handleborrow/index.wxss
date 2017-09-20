@@ -1,0 +1,40 @@
+@import "../../common/index.wxss";
+.index-bd{width: 750rpx; padding:0;float: left;height: 101%;}
+
+.index{height: 88%;float: left;margin-top: 17%;}
+.orderbox{
+	width:750rpx;
+	margin:0;
+	float:left;
+	border-radius: 12rpx;
+}
+
+.mails{position: relative;float: left;width: 690rpx;padding: 25rpx 30rpx;background-color: #fff;border-bottom: #f5f5f5 solid 1px;}
+.mails image{position: relative;float: left;width: 100rpx;height: 100rpx;border-radius: 10rpx;}
+.mails .mailname{position: relative;float: left;width: 300rpx;margin-left: 30rpx; font-size: 28rpx;font-weight: 700;}
+.mailtime{position: relative;float: right;width: 250rpx;overflow: hidden;font-size: 24rpx;color: #aaa;text-align: right;}
+.mails .mailmessage{position:relative;float:left;width:560rpx;margin:10rpx 0 0 30rpx;font-size:26rpx;color:#999;height:38rpx;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}
+.mails .mailmessage1{position:relative;float:left;width:560rpx;margin:10rpx 0 0 30rpx;font-size:26rpx;color:#999;}
+.unread{position:absolute;top:16rpx;left:8rpx;width:20rpx;height:20rpx;background-color:#1AAD19;border-radius:10rpx;}
+.borrowmsg{position:relative;float:left;width:560rpx;margin:10rpx 0 0 30rpx;font-size:24rpx;color:#666;}
+.bookname{position: relative;float: left;}
+.status{position: relative;float: right;}
+.statuscolor0{color:#008eff;}
+.statuscolor1{color:#32CD32;}
+.statuscolor2{color:#FF7F00;}
+.statuscolor3{color:#D9D919;}
+.statuscolor10{color:#D9D919;}
+.statuscolor11{color:#32CD32;}
+.statuscolor12{color:#FF7F00;}
+.statuscolor13{color:#D9D919;}
+
+
+#bar{width: 750rpx;margin:0;float: left;height: 9%;background-color: #fff;position: fixed;z-index: 8;left: 0;top: 0;}
+#bar0,#bar1{width: 373rpx;float: left;padding: 35rpx 0;text-align: center;color: #666;font-size: 32rpx;line-height: 40rpx;height: 52rpx;}
+#bar_guider{position: absolute;z-index: 9;width: 275rpx;left: 50rpx;bottom: 0;background-color: #008eff;height: 8rpx;border-radius: 4rpx}
+
+
+#device_line{width: 1rpx;border-right: #f4f4f4 solid 1px;height: 50rpx;margin-top: 26rpx;float: left}
+
+.doneline{position:relative;float:left;width:250rpx;border-left:#eee solid 160rpx;border-right:#eee solid 160rpx;text-align:center;color:#ccc;line-height:1px;margin:40rpx 90rpx;font-size:28rpx;}
+navigator{float: left;}

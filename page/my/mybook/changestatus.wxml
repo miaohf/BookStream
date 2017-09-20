@@ -1,0 +1,43 @@
+
+<view class="index">
+  <view class="index-bd">
+  <view wx:if="{{status==0}}">
+  	<view class="weui-cell">
+	    <view class="weui-cell__hd"><label class="weui-label">本书可外借</label></view>
+	    <view class="weui-cell__bd">
+	      <switch bindchange="switch1Change"/>
+	    </view>
+  	</view>
+  </view>
+
+  <view wx:if="{{status==1}}">
+  	<view class="weui-cell">
+	    <view class="weui-cell__hd"><label class="weui-label">本书暂不外借</label></view>
+	    <view class="weui-cell__bd">
+	      <switch bindchange="switch2Change"/>
+	    </view>
+  	</view>
+  </view>
+
+  <view wx:if="{{status==2}}">
+  	<view class="weui-cell">
+	    <view class="weui-cell__hd"><label class="weui-label">本书已线下交接借出</label></view>
+	    <view class="weui-cell__bd">
+	      <switch bindchange="switch3Change"/>
+	    </view>
+  	</view>
+  </view>
+
+  <view wx:if="{{status==3}}">
+  	<radio-group class="radio-group" bindchange="radioChange">
+	  <label class="radio" wx:for="{{statusitems}}" wx:key="{{item}}">
+	    <radio value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+	  </label>
+	</radio-group>
+  </view>
+
+
+   <button type="primary" size="default"  bindtap="setit"> 提交</button>
+
+  </view>
+</view>

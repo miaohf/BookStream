@@ -1,0 +1,51 @@
+<view id="bar">
+  	<view id="bar0" data-bar="0" bindtap="bar">馆藏家</view>
+		<view id="device_line"></view>
+  	<view id="bar1" data-bar="1" bindtap="bar">热门书</view>
+  	<view id="bar_guider" animation="{{animationData}}"></view>
+  </view>
+
+  
+<scroll-view class="index" scroll-y="true" scroll-top="{{scrolltop}}" upper-threshold="1" bindscrolltolower="scrolldown" bindscrolltoupper="refresh">
+  
+  <view class="index-bd">
+  
+	<view  class="orderbox" style="display: {{bar==0 ? 'block' : 'none'}}">
+		<!-- <view class="boxtitle">馆藏家排行榜</view> -->
+		<view class="box_inner">
+			<block wx:for-items="{{users}}" wx:key="{{item.id}}">
+				<navigator url="../my/otheruser/other?openid={{item.openid}}" hover-class="">
+				<view class="order_items">
+					<view class="order_num">{{index+1}}</view>
+					<image style="" mode="" src="{{item.avatar}}" binderror="" bindload=""></image>
+					<view class="booksnum">藏{{item.booksnum}}本</view>
+					<view class="itemname">{{item.name}}</view>
+				</view>
+				</navigator>
+			</block>
+		</view>
+		<view class="doneline" hidden="{{isdone==0?true:false}}">
+	        我也是有底线的
+	    </view>
+	</view>
+
+	<view  class="orderbox" style="display: {{bar==0 ? 'none' : 'block'}}">
+		<!-- <view class="boxtitle">热书排行榜</view> -->
+		<view class="box_inner">
+			<block wx:for-items="{{books}}" wx:key="{{item.id}}">
+				<navigator url="../exchange/book/book?id={{item.id}}" hover-class="">
+				<view class="order_items">
+					<view class="order_num">{{index+1}}</view>
+					<image style="" mode="" src="{{item.image_m}}" binderror="" bindload=""></image>
+					<view class="itemname">{{item.name}}</view>
+				</view>
+				</navigator>
+			</block>
+		</view>
+		<view class="doneline" hidden="{{isdone2==0?true:false}}">
+	        我也是有底线的
+	    </view>
+	</view>
+
+</view>
+  </scroll-view>

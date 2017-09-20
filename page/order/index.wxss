@@ -1,0 +1,53 @@
+@import "../common/index.wxss";
+.index-bd{width: 750rpx; padding:0;float: left;height: 101%;}
+
+.index{height: 89%;float: left;margin-top: 16%;}
+.orderbox{
+	width:750rpx;
+	margin:0;
+	float:left;
+	border-radius: 12rpx;
+}
+.boxtitle{
+	width:710rpx;
+	background-color:#57b5fb;
+	height:82rpx;
+	font-size:28rpx;
+	line-height:82rpx;
+	color:#fff;
+	float:left;
+	border-radius:20rpx 20rpx 0 0;
+	padding:0 20rpx;
+	font-weight:bold;
+}
+.box_inner{
+	width: 710rpx;
+	padding: 20rpx;
+	float: left;
+	background-color: #fff
+}
+.order_items{
+	width: 670rpx;
+	float: left;
+	border-bottom: #f5f5f5 solid 1px;
+	padding: 20rpx;	
+}
+navigator:last-child .order_items{border:none;}
+
+.orderbox:first-child .order_items image{width: 100rpx;height: 100rpx;border-radius: 50%;float: left;}
+.order_items image{width: 100rpx;height: 146rpx;float: left;}
+.order_num{width: 40rpx;height: 40rpx;background-color: #57b5fb;border-radius: 50%;text-align: center;line-height: 40rpx;float: left;color: #fff;margin: 53rpx 30rpx 53rpx 0rpx;font-weight: bold;font-size: 22rpx}
+.itemname{width: 320rpx;float: right;color: #888;font-size: 24rpx;height: 42rpx;line-height: 42rpx;margin: 52rpx 0;text-align: center;}
+.orderbox:first-child .order_num{margin: 30rpx 30rpx 30rpx 0rpx;}
+.orderbox:first-child .itemname{margin: 29rpx 0;}
+
+#bar{width: 750rpx;margin:0;float: left;height: 9%;background-color: #fff;position: fixed;z-index: 8;left: 0;top: 0;}
+#bar0,#bar1{width: 373rpx;float: left;padding: 35rpx 0;text-align: center;color: #666;font-size: 32rpx;line-height: 40rpx;height: 52rpx;}
+#bar_guider{position: absolute;z-index: 9;width: 275rpx;left: 50rpx;bottom: 0;background-color: #008eff;height: 8rpx;border-radius: 4rpx}
+
+.booksnum{width: 100rpx;float: right;font-size: 24rpx;color: #B20600;line-height: 36rpx;height: 36rpx;margin: 32rpx;text-align: center;}
+
+#device_line{width: 1rpx;border-right: #f4f4f4 solid 1px;height: 50rpx;margin-top: 26rpx;float: left}
+
+.doneline{position:relative;float:left;width:250rpx;border-left:#eee solid 160rpx;border-right:#eee solid 160rpx;text-align:center;color:#ccc;line-height:1px;margin:40rpx 90rpx;font-size:28rpx;}
+navigator{float: left;}

@@ -1,0 +1,27 @@
+
+<view class="index">
+  <view class="index-bd">
+	<view id="mail_wrapper">
+		<view id="wrapper_head">
+			<image style="" mode="" src="{{themail.fromavatar}}" binderror="" bindload=""></image>
+			<view id="time">{{themail.updated_at}}</view>
+			<view id="name">{{themail.fromname}}</view>
+		</view>
+		<view id="mail_message">
+			{{themail.message}}
+		</view>
+	</view>
+	<button id="responsebtn" wx:if="{{response==0}}" type="primary" size="default" bindtap="response">回信</button>
+
+	<view id="rewrite_wrapper">
+		<view id="return_form" wx:if="{{response==1}}">
+		<form bindsubmit="sendmail">
+			<view id="res_title">回复站内邮</view>
+			<textarea name="mail" bindblur="" auto-height placeholder="回信内容" />
+			<button id="sendbtn" type="primary" size="mini"  form-type="submit">发送</button>
+		</form>
+		</view>
+	</view>
+   
+  </view>
+</view>

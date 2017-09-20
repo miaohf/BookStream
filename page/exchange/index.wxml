@@ -1,0 +1,41 @@
+<!-- <view class="searchbar">
+  <view class="weui-cells weui-cells_after-title">
+  <view class="head_mid">
+    <view class="weui-cell weui-cell_input">
+      <input class="weui-input searchbar_input" maxlength="10" placeholder="输入书名搜索" />
+    </view>
+  </view>
+  </view>
+</view> -->
+    <view class="page-section page-section-spacing swiper" id="homepage_banner">
+      <swiper indicator-dots="{{swiper.indicatorDots}}"
+        autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}">
+        <block wx:for="{{swiper.binnerimg}}" wx:key="*this">
+          <swiper-item>
+            <view class="swiper-item">
+              <image class="swiper-item-img" src="{{item.img}}" data-navi="{{item.navi}}" bindtap="bgto"></image>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+
+<view class="index">
+  <view class="index-bd">
+    <view class="kind-list">
+      <block wx:for-items="{{list}}" wx:key="{{item.id}}">
+        <view class="kind-list-item">
+
+            <navigator url="/page/exchange/books/books?kind={{item.name}}&kind_en={{item.id}}" class="navigator">
+              <view id="{{item.id}}" class="kind-list-item-hd ">
+                <image class="kind-list-img" src="{{item.iconimg}}"></image>
+                <view class="kind-list-text">{{item.name}}</view>
+                <image class="kind-list-icon" src="/image/kind/icon-three-point.png"></image>
+              </view>
+            </navigator>
+
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

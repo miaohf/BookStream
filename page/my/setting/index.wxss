@@ -1,0 +1,2 @@
+@import "../../common/index.wxss";
+.index-bd{width: 750rpx;overflow: hidden; padding:0;float: left;}

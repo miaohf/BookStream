@@ -1,0 +1,50 @@
+<view id="bar">
+  	<view id="bar0" data-bar="0" bindtap="bar">收到邮件</view>
+		<view id="device_line"></view>
+  	<view id="bar1" data-bar="1" bindtap="bar">发出邮件</view>
+  	<view id="bar_guider" animation="{{animationData}}"></view>
+  </view>
+  
+<scroll-view class="index" scroll-y="true" scroll-top="{{scrolltop}}" bindscrolltolower="scrolldown"  bindscrolltoupper="refresh"  upper-threshold="1">
+  
+  <view class="index-bd">
+
+  <view  class="orderbox"  wx:if="{{bar==0}}">
+	<block wx:for-items="{{recieves}}" wx:key="{{item.id}}" wx:for-index="idx">
+		<navigator url="./mail?id={{item.id}}&index={{idx}}" hover-class="">	
+		<view class="mails" >
+			<image style="" mode="" src="{{ item.fromavatar }}" binderror="" bindload=""></image>
+			<view class="mailname"> {{ item.fromname }} </view>	
+			<view class="mailtime">{{item.updated_at}}</view>
+			<view class="mailmessage"> {{ item.message }} </view>
+			<view class="unread" wx:if="{{item.status==1}}"></view>		
+		</view>
+		</navigator>
+	</block>
+	<view class="doneline" hidden="{{isdone==0?true:false}}">
+	        我也是有底线的
+	</view>
+	</view>
+
+    
+	<view  class="orderbox"  wx:if="{{bar==1}}">
+	<block wx:for-items="{{sends}}" wx:key="{{item.id}}">
+		<view class="mails" >
+			<image style="" mode="" src="{{ item.toavatar }}" binderror="" bindload=""></image>
+			<view class="mailname"> 发给{{ item.toname }} </view>	
+			<view class="mailtime">{{item.updated_at}}</view>
+			<view class="mailmessage1"> {{ item.message }} </view>		
+		</view>
+	</block>
+	
+	<view class="doneline" hidden="{{isdone2==0?true:false}}">
+        我也是有底线的
+    </view>
+    </view>
+   
+
+
+   
+
+  </view>
+</scroll-view>

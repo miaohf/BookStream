@@ -1,0 +1,74 @@
+
+<view class="index">
+  <view class="index-bd">
+
+	<view class="weui-cells weui-cells_form" style="margin-top:0">
+	<view class="weui-cell">
+	    	<view class="weui-cell__hd" >
+	    	<text style="color: #999;font-size: 28rpx"> 添加书籍\n 点击添加按钮，将摄像头对准书封的条形码</text></view>
+	   </view>
+	  <view class="weui-cell">
+		  <view wx:if="{{book.img==''}}">
+			  <view class="weui-uploader__input-box">
+			  	<view class="weui-uploader__input" bindtap="scan"></view>
+			  </view>
+		  </view>
+		  <view wx:else>
+		  	<image style="" mode="" src="{{book.img}}" binderror="" bindload="" style="width: 150rpx;height: 210rpx;margin: 0 275rpx 6px 275rpx;box-shadow: 3px 3px 3px #ddd"></image>
+		  </view>
+      </view>
+	  <view class="weui-cell">
+	    <view class="weui-cell__hd"><label class="weui-label">书名：</label></view>
+	    <view class="weui-cell__bd">
+	      <input class="weui-input" value="{{book.title}}" disabled></input>
+	    </view>
+	  </view>
+	  <view class="weui-cell">
+	    <view class="weui-cell__hd"><label class="weui-label">ISBN：</label></view>
+	    <view class="weui-cell__bd">
+	      <input class="weui-input" value="{{book.isbn}}" disabled></input>
+	    </view>
+	  </view>
+		
+	</view>
+
+	<view class="weui-cells weui-cells_form" style="margin-top:50rpx">
+	 	<view class="weui-cell">
+	    	<view class="weui-cell__hd" style="color: #999;font-size: 28rpx">补全信息</view>
+	    </view>
+		<form bindsubmit="addbook">
+		  <view class="section">
+				<picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}" name="picker1">
+				  <view class="picker" id="picker1">
+				    选择类别：<text class="sta">{{array[index]}}</text>	
+				  </view>
+				</picker>
+		  </view>
+		  <view class="section">
+				<picker bindchange="bindPickerChange2" value="{{index2}}" range="{{array2}}" name="picker2">
+				  <view class="picker" id="picker2">
+				    选择状态：<text class="sta">{{array2[index2]}}</text>	
+				  </view>
+				</picker>
+		  </view>
+		  <view hidden="{{hidden_needtoknow}}" class="weui-cell">
+		    <view class="weui-cell__hd"><label class="weui-label">借阅须知：</label></view>
+		    <view class="weui-cell__bd">
+		      <input class="weui-input" value="" name="needtoknow" placeholder="e.g.只面向同城借阅"></input>
+		    </view>
+		  </view>
+		  <view class="weui-cell" style="border-bottom: 1px solid #eee">
+		    <view class="weui-cell__bd">
+		      <textarea class="weui-textarea" name="story" placeholder="请输入您和这本书的经历和故事" rows="3" style="height: 90px"></textarea>
+		      <view class="weui-textarea-counter"><span>0</span>/200</view>
+		    </view>
+		  </view>
+		  <button  formType="submit" class="weui-btn weui-btn_primary" style="margin: 20px 100rpx;width:550rpx">添加</button>
+	    </form>
+	</view>
+
+
+   
+
+  </view>
+</view>
