@@ -16,6 +16,9 @@ Page({
     var that=this;
     thisid=id;
     thisindex=options.index;
+    wx.showLoading({
+          title: '正在加载',
+      });
     wx.request({
     	url:apiUrl+'handleborrow',
     	method:'POST',
@@ -27,6 +30,7 @@ Page({
     	},
     	success:function(res){
     		console.log(res)
+        wx.hideLoading()
     		that.setData({
     			'info.bookimg':res.data.thebook.image_m,
     			'info.bookname':res.data.thebook.name,
@@ -41,6 +45,7 @@ Page({
     	},
     	fail:function(err){
     		console.log(err)
+        wx.hideLoading()
     	}
     })
   },
@@ -48,6 +53,9 @@ Page({
   	var choose=e.detail.target.dataset.choose;
   	app.toGetUser(function(sign){
   		if(sign){
+        wx.showLoading({
+          title: '正在加载',
+      });
   			wx.request({
 		  		url:apiUrl+'handleborrowre',
 		  		method:'POST',
@@ -62,6 +70,7 @@ Page({
 		  		},
 		  		success:function(res){
 		  			console.log(res)
+            wx.hideLoading()
             if(res.data.code==200){
                 if(choose==1){
                   wx.showModal({
@@ -116,6 +125,7 @@ Page({
 		  		},
 		  		fail:function(err){
 		  			console.log(err)
+            wx.hideLoading()
 		  		}
 		  	})
   		}else{

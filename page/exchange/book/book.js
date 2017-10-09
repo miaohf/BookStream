@@ -31,10 +31,14 @@ Page({
     stars:[{starnum:1},{starnum:2},{starnum:3},{starnum:4},{starnum:5},{starnum:6},{starnum:7},{starnum:8},{starnum:9},{starnum:10}],
     greystar:'/image/book/star_grey.png',
     yellowstar:'/image/book/star_yellow.png',
-    hasstar:false
+    hasstar:false,
+    borrower:[]
     },
   onLoad: function(options) {
     if(options.id){
+      wx.showLoading({
+          title: '正在加载',
+      });
       var that=this
       wx.request({
         url: apiUrl+'thebook', 
@@ -47,6 +51,7 @@ Page({
             'content-type': 'application/json'
         },
         success: function(res) {
+          wx.hideLoading()
           console.log(res);
           that.setData({
             book:res.data.book,
@@ -57,8 +62,15 @@ Page({
           wx.setNavigationBarTitle({
             title:that.data.book.name
           });
+          if(res.data.borrower){
+            that.setData({
+              borrower:res.data.borrower
+            })
+            console.log(that.data)
+          }
         },
         fail:function(err){
+          wx.hideLoading()
           console.log(err)
         }
       });
@@ -156,6 +168,9 @@ Page({
     var that=this
     console.log(that.data.book)
     if(e.detail.value.comment!=''){
+      wx.showLoading({
+          title: '正在加载',
+      });
       //request
       wx.request({
         url: apiUrl+'addcomment', 
@@ -171,6 +186,7 @@ Page({
           'content-type': 'application/json'
       },
       success: function(res) {
+        wx.hideLoading()
         console.log(res);
         if(res.data.code==200){
           that.hidecommentbox();
@@ -183,6 +199,7 @@ Page({
       },
       fail:function(err){
         console.log(err)
+        wx.hideLoading()
       }
       });
     }else{
@@ -253,6 +270,9 @@ Page({
   scoreit:function(){
     var nowstarnum=this.data.nowstarnum;
     var that=this;
+    wx.showLoading({
+          title: '正在加载',
+      });
     wx.request({
       url:apiUrl+'scoreit',
       method:'POST',
@@ -266,6 +286,7 @@ Page({
       },
       success:function(res){
         console.log(res)
+        wx.hideLoading()
         if(res.data.code==200){
           
           wx.showToast({
@@ -300,6 +321,7 @@ Page({
       },
       fail:function(err){
         console.log(err)
+        wx.hideLoading()
         wx.showModal({
           title: '抱歉',
           content: '评星失败，请稍后再试',

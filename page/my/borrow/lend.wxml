@@ -1,0 +1,32 @@
+<!-- <view id="titlearea">{{title}}</view> -->
+
+<view class="index">
+  <view class="index-bd">
+    <view class="kind-list">
+      <block wx:for-items="{{list}}" wx:key="{{item.id}}">
+      
+        <view class="kind-list-item">
+          <view id="{{item.id}}" class="kind-list-item-hd " bindtap="">
+          <navigator url="/page/my/otheruser/other?openid={{item.from}}" class="navigator">
+                <view class="kind-list-text">
+                  <image class="user-img" src="{{item.user_avatar}}"></image>
+                    <text>{{item.book.name}}\n</text>
+                    <text>{{item.created_at}}\n</text>
+                </view>
+          </navigator>
+                <navigator url="../email/writemail?openid={{item.owner}}&avatar={{item.user_avatar}}" hover-class="" style="float: left;width: 100%">
+                  <view id="sendmail">
+                    <image style="" mode="" src="/image/my/mail.png" binderror="" bindload=""></image>
+                  </view>
+              </navigator>
+              </view>   
+
+        </view>
+        
+      </block>
+      <view id="doneline" hidden="{{alldone==0?true:false}}">
+        我也是有底线的
+      </view>
+    </view>
+  </view>
+</view>

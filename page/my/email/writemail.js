@@ -1,56 +1,21 @@
 var app = getApp()
 const apiUrl = require('../../../config').apiUrl
+var toopenid,avatar=''
 Page({
   data: {
-    title:'邮件',
+    title:'写邮件',
     response:0,
-    themail:{
-
-    }
+    avatar:''
    },
   onLoad: function(options) {
     wx.setNavigationBarTitle({
       title:this.data.title
     })
-    var that=this
-    wx.showLoading({
-          title: '正在加载',
-      });
-    wx.request({
-      url: apiUrl+'themail', 
-      method:'GET',
-      data: {
-        id:options.id,
-        openid:app.globalData.openid
-      },
-      header: {
-          'content-type': 'application/json'
-      },
-      success: function(res) {
-        console.log(res);
-        wx.hideLoading()
-        that.setData({
-          themail:res.data.themail
-        });
-        var pages=getCurrentPages();
-        var prepage=pages[pages.length-2]
-        var recieves=prepage.data.recieves
-        recieves[options.index].status=0;
-        prepage.setData({
-          recieves:recieves
-        })
-      },
-      fail:function(err){
-        console.log(err)
-        wx.hideLoading()
-        wx.showModal({
-          title:'失败',
-          content:'加载失败，请稍后再试',
-          success:function(){
-          }
-        })
-      }
-    });
+    toopenid=options.openid
+    avatar=options.avatar
+    this.setData({
+      avatar:avatar
+    })
   },
   response:function(){
   	this.setData({response:1})
@@ -68,7 +33,7 @@ Page({
 	      method:'POST',
 	      data: {
 	        openid:app.globalData.openid,
-	        toopenid:this.data.themail.fromopenid,
+	        toopenid:toopenid,
 	        message:mail
 	      },
 	      header: {
@@ -82,10 +47,6 @@ Page({
 		        	title:'成功',
 		        	content:'邮件发送成功',
 		        	success:function(){
-                var pages=getCurrentPages();
-                var prepage=pages[pages.length-2]
-                prepage.bar(2)
-
                 wx.navigateBack({
                   delta:1
                 })

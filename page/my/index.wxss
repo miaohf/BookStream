@@ -2,9 +2,9 @@
 .index-bd{width: 750rpx;overflow: hidden; padding:0;float: left;}
 
 
-#personal_head{position: relative;float: left;width: 750rpx;height: 420rpx;background-image: url('https://www.aliencat.cn/books/public/images/mybg.jpg');background-size: 100% 55%;margin-bottom: 20rpx;}
+#personal_head{position: relative;float: left;width: 750rpx;height: 420rpx;background-image: url('https://www.aliencat.cn/books/public/images/mybg.jpg');background-size: 100% 55%;margin-bottom: 16rpx;}
 #mid_box{position: absolute;z-index: 9;width: 180rpx;height: 220rpx;left:285rpx;top: 100rpx;}
-#mid_box image{width: 180rpx;height: 180rpx;border-radius: 50%;}
+#mid_box image{width: 180rpx;height: 180rpx;border-radius: 50%;background-color:#fff;}
 #myname{width: 180rpx;height: 40rpx;font-size: 26rpx;line-height: 40rpx;color: #666;text-align: center;}
 #score_box{position: absolute;z-index: 8;bottom: 0;width: 750rpx;left: 0;height: 200rpx;line-height: 160rpx;background-color: #fff;}
 #score{width: 373rpx;margin-top:82rpx;float: left;text-align: center;font-size: 42rpx;color: #333;vertical-align: bottom;padding-bottom: 10rpx;line-height: 46rpx;}
@@ -16,5 +16,6 @@
 #unuser{width:750rpx;float:left;color:#bbb;text-align:center;font-size:28rpx;margin-top:160rpx;}
 .navigator{padding: 0.1rpx!important}
 .navigator::before{height: 0;border: none}
+#sign{width: 680rpx;padding: 0rpx 35rpx;font-size: 28rpx;color: #999;text-align: center;line-height: 80rpx;margin: 0 20rpx 6rpx 0rpx}
 
 #mailcount,#borrowcount,#commentcount{position:absolute;width:40rpx;height:40rpx;color:#fff;background-color:#1AAD19;font-size:26rpx;text-align:center;line-height:40rpx;border-radius:25rpx;z-index:9;top:60rpx;right:30rpx;font-weight:700;}

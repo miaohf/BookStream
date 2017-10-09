@@ -1,8 +1,9 @@
 var app = getApp()
 const apiUrl = require('../../../config').apiUrl
+var bookid=0
 Page({
   data: {
-    title:'',
+    title:'谁借过这本书',
     list: [
 
     ],
@@ -10,42 +11,30 @@ Page({
     alldone:0
   },
   onLoad: function(options) {
-    this.setData({
-      options:options
-    })
-
+    bookid=options.id
     this.asklist(0);
-
-    this.setData({
-      title:options.kind
-    });
     wx.setNavigationBarTitle({
-      title:options.kind
+      title:this.data.title
     })
+    
   },
   onReachBottom:function(e){
     this.asklist(0);
   },
-  onPullDownRefresh:function(e){
-    this.setData({
-      nowlist_guide:0,
-      alldone:0
-    });
-    this.asklist(1)
-  },
   asklist:function(sign){
+    console.log(this.data)
     if(this.data.alldone==0){
       wx.showLoading({
         title: '正在加载',
       })
       var that=this
       wx.request({
-        url: apiUrl+'kindbooks', 
+        url: apiUrl+'ilend', 
         method:'POST',
         data: {
-          kind:this.data.options.kind_en,
+          openid:app.globalData.openid,
           guide:this.data.nowlist_guide,
-          onlycity:app.globalData.onlycity
+          bookid:bookid
         },
         header: {
             'content-type': 'application/json'

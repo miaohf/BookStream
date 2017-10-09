@@ -1,0 +1,19 @@
+@import "../../common/index.wxss";
+page{background-color: #fff;}
+.index-bd{width: 750rpx;overflow: hidden; padding:30rpx 0 0 0;float: left;}
+
+#mail_wrapper{position: relative;float: left;width: 650rpx;padding: 30rpx 50rpx 0 50rpx;background-color: #fff;}
+#wrapper_head{position: relative;float: left;width: 650rpx;text-align: center;}
+#wrapper_head image{position: relative;width: 160rpx;height: 160rpx;border-radius: 50%;}
+#time{position: relative;float: right;width: 400rpx;text-align: right;font-size: 24rpx;color: #999;}
+#name{position:relative;float:right;width:500rpx;text-align:right;font-size:26rpx;color:#777;line-height:80rpx;}
+#mail_message{position:relative;float:left;width:610rpx;color:#777;font-size:26rpx;padding:20rpx;background-color:#f4f4f4;border-radius:15rpx;margin:30rpx 0;min-height: 40px;}
+
+#rewrite_wrapper{position: relative;float: left;width: 750rpx;padding:50rpx 0rpx 30rpx 0;background-color:#fff;}
+#responsebtn{position:relative;float:left;width:640rpx;margin:20rpx 55rpx;}
+#return_form{position:relative;float:left;width:750rpx;margin-top:0;background-color:#fff;}
+#res_title{position:relative;float:left;width:730rpx;border-bottom:#f4f4f4 solid 1px;color:#888;font-size:26rpx;padding:20rpx 10rpx;border-top:#f4f4f4 solid 1px;text-align:center;margin-bottom:20rpx;}
+#return_form textarea{position:relative;float:left;width:600rpx;margin:20rpx 55rpx;background-color:#f4f4f4;padding:20rpx;border-radius:10rpx;min-height: 50px;
+}
+#sendbtn{position:relative;float:left;width:600rpx;margin:20rpx 75rpx;padding:10rpx 0;font-size:28rpx;}
+

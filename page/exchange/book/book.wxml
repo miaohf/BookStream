@@ -68,13 +68,17 @@
 
     </view>
 
-    <!-- <view class="usertail">
-    <view id="usertail_title">漂流轨迹</view>
-      <image style="" mode="" src="{{book.user_avatar}}" binderror="" bindload=""></image>
-      <image style="" mode="" src="{{book.user_avatar}}" binderror="" bindload=""></image>
-      <image style="" mode="" src="{{book.user_avatar}}" binderror="" bindload=""></image>
-      <text> {{ '……' }} </text>    
-    </view> -->
+    <view class="usertail" hidden="{{borrower.length>0?false:true}}">
+    <view id="usertail_title">他们借过</view>
+    <view id="borrowwrap">
+      <block wx:for-items="{{borrower}}" wx:key="{{item.id}}">
+        <navigator url="../../my/otheruser/other?openid={{item.openid}}" hover-class="">
+          <image style="" mode="" src="{{item.avatar}}" binderror="" bindload=""></image>
+        </navigator>
+      </block>
+    </view>
+       
+    </view>
 
     <view class="userinfo">
     <view class="comment_title">当前所有者</view>
@@ -150,7 +154,7 @@
       </view>
       <view id="boxright3">
         <button id="sendborrow" form-type="submit">
-          评定
+          发送
         </button>
       </view>
       </form>

@@ -11,15 +11,22 @@ Page({
    animationData:'',
    chosenid:0,
    chosenstatus:'',
-   chosenindex:''
+   chosenindex:'',
+   borrownum:0
   },
   onLoad: function(options) {
     wx.setNavigationBarTitle({
       title:app.globalData.userInfo.nickName+'的书库'
     });
+    this.loadbook();
+  },
+  loadbook:function(){
+    wx.showLoading({
+          title: '正在加载',
+    });
     var that=this
     wx.request({
-    	url: apiUrl+'mybook', 
+      url: apiUrl+'mybook', 
         method:'POST',
         data: {
           openid:app.globalData.openid
@@ -30,19 +37,22 @@ Page({
         },
         success: function(res) {
           console.log(res)
+          wx.hideLoading()
           that.setData({
             books:res.data.books,
             'user.avatar':app.globalData.userInfo.avatarUrl,
-            num:res.data.num
+            num:res.data.num,
+            borrownum:res.data.borrowcount
           })
         },
         fail:function(err){
           console.log(err)
+          wx.hideLoading()
         }
     })
   },
   iflocationjump:function(e){
-    app.getCity(function(sign,city){
+    app.getCity(function(sign,city,cityname){
 
       if(sign==0){
         wx.showModal({
@@ -57,7 +67,7 @@ Page({
           url: '../addbook/add'
         })
       }
-    })
+    },0)
   },
   hideoperatebox:function(){
     var animation = wx.createAnimation({
@@ -68,7 +78,7 @@ Page({
       is_operate_panel:true
     })
     this.animation = animation
-    animation.translateY(131).step()
+    animation.translateY(231).step()
     this.setData({
       animationData:animation.export()
     })
@@ -87,9 +97,58 @@ Page({
     })
     
     this.animation = animation
-    animation.translateY(-131).step()
+    animation.translateY(-231).step()
     this.setData({
       animationData:animation.export()
+    })
+  },
+  delbook:function(){
+    wx.showLoading({
+          title: '正在加载',
+    });
+    var that=this
+    wx.request({
+      url: apiUrl+'delbook', 
+        method:'POST',
+        data: {
+          openid:app.globalData.openid,
+          id:this.data.chosenid
+        },
+        
+        header: {
+            'content-type': 'application/json'
+        },
+        success: function(res) {
+          console.log(res)
+          wx.hideLoading()
+          if(res.data.code==200){
+            that.hideoperatebox()
+            wx.showToast({
+              title: '成功',
+              icon: 'success',
+              duration: 1000
+            })
+            that.loadbook()
+            var pages=getCurrentPages();
+            var prepage=pages[pages.length-2]
+            var my=prepage.data.my
+            var mybook=my
+            mybook.booknum=res.data.booknum
+            prepage.setData({
+              my:mybook
+            })
+          }
+        },
+        fail:function(err){
+          console.log(err)
+          wx.hideLoading()
+          that.hideoperatebox()
+          wx.showToast({
+            title: '失败',
+            icon: 'loading',
+            duration: 1000
+          })
+        }
     })
   }
 })

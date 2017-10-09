@@ -6,6 +6,13 @@
 	  		<view id="totalnum">共{{num}}本书</view>
 	  </view>	
 
+	  <navigator url="/page/my/borrow/index">
+		  <view id="myborrow"  class="my_items">
+		    我借过的书
+		    <view id="num">{{borrownum}}</view>
+		  </view>
+	  </navigator>
+
   <view id="bookarea">
 	<view wx:for-items="{{books}}" wx:key="{{item.id}}" wx:for-index="idx" class="books" data-index="{{idx}}" data-id="{{item.id}}" data-status="{{item.status}}" catchtap="menutap">
 		<image style="" mode="" src="{{item.image_m}}" binderror="" bindload=""></image>
@@ -30,8 +37,12 @@
 			<view id="checkbook" class="oper_options">查看书页</view>	
 			</navigator>		
 			<!-- <view id="booksetting" class="oper_options">书本设置</view> -->
-			<navigator url="/page/my/mybook/changestatus?id={{chosenid}}&status={{chosenstatus}}&index={{chosenindex}}" hover-class=""  bindtap="hideoperatebox">
-			<view id="changestatus" class="oper_options oper_optionslast">更改状态</view>	
+			<navigator url="/page/my/mybook/changestatus?id={{chosenid}}&status={{chosenstatus}}&index={{chosenindex}}" bindtap="hideoperatebox">
+			<view id="changestatus" class="oper_options">更改状态</view>	
+			</navigator>
+			<view id="delbook" class="oper_options" bindtap="delbook">删除本书</view>
+			<navigator url="/page/my/borrow/lend?id={{chosenid}}" bindtap="hideoperatebox">
+				<view id="whoborrow" class="oper_options oper_optionslast">谁借过他</view>	
 			</navigator>
 		</view>
 	</view>

@@ -1,0 +1,21 @@
+
+<view class="index">
+  <view class="index-bd">
+	<view id="mail_wrapper">
+		<view id="wrapper_head">
+			<image style="" mode="" src="{{avatar}}" binderror="" bindload=""></image>
+		</view>
+	</view>
+
+	<view id="rewrite_wrapper">
+		<view id="return_form" >
+		<form bindsubmit="sendmail">
+			<view id="res_title">站内邮</view>
+			<textarea name="mail" bindblur="" auto-height placeholder="邮件内容" />
+			<button id="sendbtn" type="primary" size="mini"  form-type="submit">发送</button>
+		</form>
+		</view>
+	</view>
+   
+  </view>
+</view>

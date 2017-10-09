@@ -14,21 +14,25 @@ App({
     console.log('App Hide')
   },
   globalData: {
+    existuser:false,
     hasLogin: false,
     openid: null,
     userInfo:null,
     hasuserinfo:false,
     cityname:'',
-    citycode:null
+    citycode:null,
+    onlycity:0
   },
   init:function(){
     //app 初始化，拿到缓存数据并按照授权情况做动作
+    var existuser = wx.getStorageSync('existuser')
     var openid = wx.getStorageSync('openid')
     var hasuserinfo = wx.getStorageSync('hasuserinfo')
     var hasLogin = wx.getStorageSync('hasLogin')
     var userInfo=wx.getStorageSync('userInfo')
     var cityname=wx.getStorageSync('cityname')
     var citycode=wx.getStorageSync('citycode')
+    var onlycity=wx.getStorageSync('onlycity')
     if(openid){
       this.globalData.openid=openid
     }
@@ -47,51 +51,61 @@ App({
     if(citycode){
       this.globalData.citycode=citycode
     }
+    if(existuser){
+      this.globalData.existuser=existuser
+    }
     this.getUserOpenId(function(){});
     console.log(this.globalData)
   },
   //在全局给予判断是否授权，未授权则重新发起，已授权则直接回调
   toGetUser:function(callback){
-    if(this.globalData.hasuserinfo===false){
-      var that=this;
-      if(this.globalData.openid===null){
-        this.getUserOpenId(function(sign0,res0){
-          if(sign0==1){
-            that.getUserInfo(function(sign1,res1){
-              if(sign1==1){
-                //添加进用户表
-                that.addUser();
-                console.log(that.globalData)
-                callback(true)
-              }else{
-                callback(false)
-                console.log(that.globalData)
-                console.log('sorry,get userinfo fail')
-              }
-            });
-          }else{
-            callback(false)
-            console.log(that.globalData)
-            console.log('sorry,get openid fail')
-          }
-        });
+    //existuser为真时，说明曾经添加成功或已经存在
+    if(this.globalData.existuser===false){
+      if(this.globalData.hasuserinfo===false){
+        var that=this;
+        if(this.globalData.openid===null){
+          this.getUserOpenId(function(sign0,res0){
+            if(sign0==1){
+              that.getUserInfo(function(sign1,res1){
+                if(sign1==1){
+                  //添加进用户表
+                  that.addUser();
+                  console.log(that.globalData)
+                  callback(true)
+                }else{
+                  callback(false)
+                  console.log(that.globalData)
+                  console.log('sorry,get userinfo fail')
+                }
+              });
+            }else{
+              callback(false)
+              console.log(that.globalData)
+              console.log('sorry,get openid fail')
+            }
+          });
+        }else{
+          //如果已经拒绝过授权的家伙，有openid但是没有userinfo，则直接发起授权， 不再请求openid
+          console.log('has openid without userinfo')
+          that.getUserInfo(function(sign1,res1){
+            if(sign1==1){
+              //添加进用户表
+              that.addUser();
+              console.log(that.globalData)
+              callback(true)
+            }else{
+              callback(false)
+              console.log(that.globalData)
+              console.log('sorry,get userinfo fail still')
+            }
+          });
+        }
       }else{
-        //如果已经拒绝过授权的家伙，有openid但是没有userinfo，则直接发起授权， 不再请求openid
-        console.log('has openid without userinfo')
-        that.getUserInfo(function(sign1,res1){
-          if(sign1==1){
-            //添加进用户表
-            that.addUser();
-            console.log(that.globalData)
-            callback(true)
-          }else{
-            callback(false)
-            console.log(that.globalData)
-            console.log('sorry,get userinfo fail still')
-          }
-        });
+        this.addUser();
+        callback(true);
       }
     }else{
+      console.log('existuser')
       callback(true);
     }
   },
@@ -182,7 +196,7 @@ App({
     
   },
   addUser:function(){
-
+    var self = this
     wx.request({
       url: apiUrl+'adduser', 
       method:'POST',
@@ -200,20 +214,25 @@ App({
       },
       success: function(res) {
         console.log(res);
-
+        if((res.data.code==200)||(res.data.code==201)){
+          self.globalData.existuser=true
+          wx.setStorageSync('existuser', true)
+        }
       },
       fail:function(err){
         console.log(err)
       }
     });
   },
-  getCity:function(callback){
+  getCity:function(callback,sign){
+    //sign==1时是relocate
+    console.log(this.globalData)
     var self=this
     //定位中
     wx.showLoading({
       title: '定位中',
     })
-    if(self.globalData.citycode===null){
+    if((self.globalData.citycode===null)||(sign==1)){
       wx.getLocation({
         type: 'wgs84',
         success: function(res) {
@@ -235,7 +254,7 @@ App({
               wx.setStorageSync('citycode', res.data.result.cityCode)
               self.globalData.cityname= res.data.result.addressComponent.city
               self.globalData.citycode= res.data.result.cityCode
-              callback(1,res.data.result.cityCode)
+              callback(1,res.data.result.cityCode,res.data.result.addressComponent.city)
             },
             fail:function(err){
               callback(0)
@@ -248,7 +267,8 @@ App({
         }
       })
     }else{
-      callback(1,0)
+      wx.hideLoading()
+      callback(1,self.globalData.citycode,self.globalData.cityname)
     }
     
   }

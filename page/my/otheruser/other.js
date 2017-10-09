@@ -13,6 +13,9 @@ Page({
       title:this.data.title
     })
     var that=this
+    wx.showLoading({
+          title: '正在加载',
+      });
     wx.request({
       url:apiUrl+'otheruser',
       method:'POST',
@@ -24,6 +27,7 @@ Page({
       },
       success:function(res){
         console.log(res)
+        wx.hideLoading()
         if(res.data.code==200){
           that.setData({
             'ta.avatar':res.data.ta.avatar,
@@ -44,6 +48,7 @@ Page({
       },
       fail:function(err){
         console.log(err)
+        wx.hideLoading()
         wx.showModal({
             title:'抱歉',
             content:'获取用户信息失败，请稍后退出本页面重试',

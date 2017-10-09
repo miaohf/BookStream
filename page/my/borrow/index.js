@@ -2,7 +2,7 @@ var app = getApp()
 const apiUrl = require('../../../config').apiUrl
 Page({
   data: {
-    title:'',
+    title:'我借过的书',
     list: [
 
     ],
@@ -10,42 +10,27 @@ Page({
     alldone:0
   },
   onLoad: function(options) {
-    this.setData({
-      options:options
-    })
-
     this.asklist(0);
-
-    this.setData({
-      title:options.kind
-    });
     wx.setNavigationBarTitle({
-      title:options.kind
+      title:this.data.title
     })
   },
   onReachBottom:function(e){
     this.asklist(0);
   },
-  onPullDownRefresh:function(e){
-    this.setData({
-      nowlist_guide:0,
-      alldone:0
-    });
-    this.asklist(1)
-  },
   asklist:function(sign){
+  	console.log(this.data)
     if(this.data.alldone==0){
       wx.showLoading({
         title: '正在加载',
       })
       var that=this
       wx.request({
-        url: apiUrl+'kindbooks', 
+        url: apiUrl+'iborrow', 
         method:'POST',
         data: {
-          kind:this.data.options.kind_en,
-          guide:this.data.nowlist_guide,
-          onlycity:app.globalData.onlycity
+          openid:app.globalData.openid,
+          guide:this.data.nowlist_guide
         },
         header: {
             'content-type': 'application/json'

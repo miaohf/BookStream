@@ -18,7 +18,7 @@
 				<view class="order_items">
 					<view class="order_num">{{index+1}}</view>
 					<image style="" mode="" src="{{item.avatar}}" binderror="" bindload=""></image>
-					<view class="booksnum">藏{{item.booksnum}}本</view>
+					<view class="booksnum">藏书{{item.booksnum}}本</view>
 					<view class="itemname">{{item.name}}</view>
 				</view>
 				</navigator>

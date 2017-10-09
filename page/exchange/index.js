@@ -36,6 +36,9 @@ Page({
   },
   togetkind:function(){
     var that=this
+    wx.showLoading({
+          title: '正在加载',
+      });
     wx.request({
       url: apiUrl+'kinds', 
       method:'GET',
@@ -46,6 +49,7 @@ Page({
           'content-type': 'application/json'
       },
       success: function(res) {
+        wx.hideLoading()
         console.log(res)
         var list=that.data.list
         var addlist=res.data.data.kinds
@@ -64,6 +68,7 @@ Page({
         wx.setStorageSync('timer_1', nowtime)
       },
       fail:function(err){
+        wx.hideLoading()
         console.log(err)
       }
     })

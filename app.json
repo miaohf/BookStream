@@ -18,12 +18,15 @@
     "page/my/mybook/mybook",
     "page/my/email/email",
     "page/my/email/mail",
+    "page/my/email/writemail",
     "page/my/handleborrow/index",
     "page/my/handleborrow/handle",
     "page/my/comment/comment",
     "page/my/setting/index",
     "page/my/contact/index",
-    "page/my/mybook/changestatus"
+    "page/my/mybook/changestatus",
+    "page/my/borrow/index",
+    "page/my/borrow/lend"
 
   ],
   "window": {

@@ -11,7 +11,8 @@ Page({
     isme:0,
     mailcount:0,
     commentcount:0,
-    borrowcount:0
+    borrowcount:0,
+    sign:''
    }
     },
   onLoad: function(options) {
@@ -22,7 +23,6 @@ Page({
     this.loadpage()
   },
   onShow:function(){
-    console.log('df')
     var that=this
     app.toGetUser(function(sign){
       if(sign==1){
@@ -88,6 +88,9 @@ Page({
           'my.name':app.globalData.userInfo.nickName,
           'my.isme':1
         })
+        wx.showLoading({
+          title: '正在加载',
+        });
         wx.request({
           url: apiUrl+'me', 
           method:'POST',
@@ -99,12 +102,25 @@ Page({
           },
           success: function(res) {
             console.log(res)
-            that.setData({
-              'my.ordernum':res.data.me.ordernum,
-              'my.booknum':res.data.me.booknum
-            })
+            wx.hideLoading()
+            if(res.data.code==200){
+              that.setData({
+                'my.ordernum':res.data.me.ordernum,
+                'my.booknum':res.data.me.booknum,
+                'my.sign':res.data.me.sign
+              })
+            }else{
+              that.setData({
+                'my.isme':0
+              })
+            }
           },
-          fail:function(err){}
+          fail:function(err){
+            wx.hideLoading()
+            that.setData({
+                'my.isme':0
+            })
+          }
         })
       }else{
         that.setData({

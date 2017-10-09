@@ -2,6 +2,48 @@
 <view class="index">
   <view class="index-bd">
 
+	<view class="weui-cells weui-cells_form" style="margin-top:0">
+	  <view class="weui-cell" style="justify-content:center;padding-top: 26px;"> 
+		  	<image style="" mode="" src="{{avatar}}" binderror="" bindload="" bindtap="chooseimg" style="width: 190rpx;height: 190rpx;box-shadow: 3px 3px 3px #ddd;border-radius: 50%"></image>
+      </view>
+      <form bindsubmit="setting">
+      <view class="weui-cell">
+	    <view class="weui-cell__hd"><label class="weui-label">昵称：</label></view>
+	    <view class="weui-cell__bd">
+	      <input class="weui-input" value="{{name}}" name="nickname" ></input>
+	    </view>
+	  </view>
+	  <view class="weui-cell">
+	    <view class="weui-cell__hd"><label class="weui-label">签名：</label></view>
+	    <view class="weui-cell__bd">
+	      <input class="weui-input" value="{{sign}}" name="sign" ></input>
+	    </view>
+	  </view>
+      
+  	  <button  formType="submit" class="weui-btn weui-btn_primary" style="margin: 20px 50rpx;width:650rpx">修改</button>
+  	</form>
+  	</view>
+  	<view class="weui-cells weui-cells_form noform" style="margin-top:30px">
+  		<view class="weui-cell">
+	    	<view class="weui-cell__hd" >
+	    	<text style="color: #999;font-size: 28rpx"> 以下设置不需提交，直接生效</text></view>
+	   </view>
+	  <view class="weui-cell">
+	    <view class="weui-cell__hd"><label class="weui-label">只看同城的书</label></view>
+	    <view class="weui-cell__bd" style="text-align: right;">
+	    		<switch bindchange="switch1Change" hidden="{{onlycity==0?false:true}}"/>
+	      		<switch bindchange="switch1Change"  checked hidden="{{onlycity==0?true:false}}"/>
+	    </view>
+  	  </view>
+	  <view class="weui-cell">
+	    <view class="weui-cell__hd"><label class="weui-label">重新定位城市</label></view>
+	    <view class="weui-cell__bd" style="text-align: right">
+	      <button hidden="{{relocatename==0?false:true}}" class="weui-btn weui-btn_mini weui-btn_primary" bindtap="relocate">Locate</button>
+	      <view hidden="{{relocatename==0?true:false}}" style="margin: 20rpx 0"> {{ relocatename }} </view>			
+	    </view>
+	  </view>
+		
+	</view>
 
 
    

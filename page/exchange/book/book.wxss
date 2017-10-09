@@ -30,7 +30,7 @@
 .usertail{width: 680rpx;margin: 25rpx 0 0 0;background-color: #fff;float: left;padding: 25rpx 35rpx;line-height: 142rpx;color: #999;}
 .usertail image{width: 100rpx;height: 100rpx;border-radius: 50rpx;float: left;margin: 20rpx 16rpx}
 #usertail_title{width: 680rpx;padding: 5rpx 0;color: #212121;font-size: 32rpx;color: #535353;float: left;font-weight: bold;line-height: 48rpx}
-
+#borrowwrap{width: 680rpx;display: flex;overflow-x: scroll;height: 160rpx;}
 
 .comment_area{width: 680rpx;margin: 25rpx 0 0 0;background-color: #fff;float: left;padding: 25rpx 35rpx;box-shadow:#eee 0px 3px 3px;}
 .comment_title{width: 680rpx;padding: 5rpx 0;color: #212121;font-size: 32rpx;color: #535353;float: left;font-weight: bold;margin-bottom:30rpx;}

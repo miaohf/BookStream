@@ -13,6 +13,7 @@
       </view>
     </view>
 
+  <view id="sign"  class="my_items" wx:if="{{my.sign!=''}}">{{my.sign}}</view>
   <block wx:if="{{my.isme==1}}">
     <navigator url="/page/my/mybook/mybook" class="navigator">
       <view class="my_items">
@@ -37,10 +38,7 @@
       <view id="commentcount" hidden="{{commentcount==0?true:false}}">{{commentcount}}</view>
     </view>
     </navigator>
-    <!-- <view class="my_items">
-      <image style="" mode="" src="/image/kind/culture.png" binderror="" bindload=""></image>
-      我的排行
-    </view> -->
+
     <navigator url="/page/my/handleborrow/index" class="navigator" style="float:left">
     <view class="my_items">
       <image style="" mode="" src="/image/kind/culture.png" binderror="" bindload=""></image>
@@ -52,10 +50,14 @@
       <image style="" mode="" src="/image/kind/culture.png" binderror="" bindload=""></image>
       书迹追踪
     </view> -->
-    <!-- <view class="my_items">
+
+    <navigator url="/page/my/setting/index?sign={{my.sign}}" class="navigator" style="float:left">
+    <view class="my_items">
       <image style="" mode="" src="/image/kind/culture.png" binderror="" bindload=""></image>
       设置
-    </view> -->
+    </view>
+    </navigator>
+
     <navigator url="/page/my/contact/index" class="navigator" style="float:left">
     <view class="my_items">
       <image style="" mode="" src="/image/kind/culture.png" binderror="" bindload=""></image>

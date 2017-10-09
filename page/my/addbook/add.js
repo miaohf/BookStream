@@ -32,6 +32,9 @@ Page({
       success: (res) => {
         console.log(res.result)
         var that=this
+        wx.showLoading({
+          title: '正在加载',
+        });
         wx.request({
           url: apiUrl+'scanbook', 
           method:'POST',
@@ -43,15 +46,32 @@ Page({
           },
           success: function(res1) {
             console.log(res1)
-            that.setData({
-            	'book.title':res1.data.title,
-            	'book.isbn':res1.data.isbn10+'/'+res1.data.isbn13,
-            	'book.img':res1.data.images['large'],
-              addbook:res1.data
-            })
+            wx.hideLoading()
+            if(res1.data.id){
+              that.setData({
+                'book.title':res1.data.title,
+                'book.isbn':res1.data.isbn10+'/'+res1.data.isbn13,
+                'book.img':res1.data.images['large'],
+                addbook:res1.data
+              })
+            }else{
+              wx.showModal({
+                title: '查询本书失败',
+                content: '请稍后再试',
+                success: function(res) {
+                }
+              })
+            }
           },
           fail:function(err){
+            wx.hideLoading()
             console.log(err)
+            wx.showModal({
+              title: '查询本书失败',
+              content: '请稍后再试',
+              success: function(res) {
+              }
+            })
           }
         })
       }
@@ -69,6 +89,9 @@ Page({
       })
     }else{
       var that=this
+      wx.showLoading({
+          title: '正在加载',
+      });
       wx.request({
         url: apiUrl+'addbook', 
         method:'POST',
@@ -103,6 +126,7 @@ Page({
         },
         success: function(res) {
           console.log(res)
+          wx.hideLoading()
           if(res.data.code==200){
             wx.showToast({
               title: '成功',
@@ -119,6 +143,14 @@ Page({
                   books: newbooks,
                   num:orinum+1
                  })
+
+                var prepage1=pages[pages.length-3]
+                var my=prepage1.data.my
+                var mybook=my
+                mybook.booknum=my.booknum+1
+                prepage1.setData({
+                  my:mybook
+                })
                  wx.navigateBack();
               }
             })
@@ -142,6 +174,7 @@ Page({
           
         },
         fail:function(err){
+          wx.hideLoading()
           console.log(err)
           wx.showModal({
             title: '添加失败',

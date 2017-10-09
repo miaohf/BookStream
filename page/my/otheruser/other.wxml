@@ -14,7 +14,7 @@
     </view>
 
 <!-- 排行 积分 会员等级等信息 -->
-  <navigator url="../email/email?toopenid={{ta.openid}}" hover-class="" style="width: 750rpx;float: left;">
+  <navigator url="../email/writemail?openid={{ta.openid}}&avatar={{ta.avatar}}" hover-class="" style="width: 750rpx;float: left;">
   <view id="sendmail">
     <image style="" mode="" src="/image/my/mail.png" binderror="" bindload=""></image>向{{ta.gender==1?'他':'她'}}发送私信
   </view>
