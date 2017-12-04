@@ -1,8 +1,7 @@
-const openIdUrl = require('./config').openIdUrl
 const apiUrl = require('./config').apiUrl
 
 App({
-  onLaunch: function () {
+    onLaunch: function () {
     console.log('App Launch')
   },
   onShow: function () {
@@ -14,9 +13,8 @@ App({
     console.log('App Hide')
   },
   globalData: {
-    existuser:false,
-    hasLogin: false,
     openid: null,
+    thirdSession:null,
     userInfo:null,
     hasuserinfo:false,
     cityname:'',
@@ -25,19 +23,19 @@ App({
   },
   init:function(){
     //app 初始化，拿到缓存数据并按照授权情况做动作
-    var existuser = wx.getStorageSync('existuser')
     var openid = wx.getStorageSync('openid')
+    var thirdSession = wx.getStorageSync('thirdSession')
     var hasuserinfo = wx.getStorageSync('hasuserinfo')
-    var hasLogin = wx.getStorageSync('hasLogin')
     var userInfo=wx.getStorageSync('userInfo')
     var cityname=wx.getStorageSync('cityname')
     var citycode=wx.getStorageSync('citycode')
     var onlycity=wx.getStorageSync('onlycity')
+
     if(openid){
       this.globalData.openid=openid
     }
-    if(hasLogin){
-      this.globalData.hasLogin=hasLogin
+    if(thirdSession){
+      this.globalData.thirdSession=thirdSession
     }
     if(hasuserinfo){
       this.globalData.hasuserinfo=hasuserinfo
@@ -51,178 +49,145 @@ App({
     if(citycode){
       this.globalData.citycode=citycode
     }
-    if(existuser){
-      this.globalData.existuser=existuser
-    }
-    this.getUserOpenId(function(){});
+    this.getLogin(function(){});
     console.log(this.globalData)
   },
-  //在全局给予判断是否授权，未授权则重新发起，已授权则直接回调
-  toGetUser:function(callback){
-    //existuser为真时，说明曾经添加成功或已经存在
-    if(this.globalData.existuser===false){
-      if(this.globalData.hasuserinfo===false){
-        var that=this;
-        if(this.globalData.openid===null){
-          this.getUserOpenId(function(sign0,res0){
-            if(sign0==1){
-              that.getUserInfo(function(sign1,res1){
-                if(sign1==1){
-                  //添加进用户表
-                  that.addUser();
-                  console.log(that.globalData)
-                  callback(true)
-                }else{
-                  callback(false)
-                  console.log(that.globalData)
-                  console.log('sorry,get userinfo fail')
-                }
-              });
-            }else{
-              callback(false)
-              console.log(that.globalData)
-              console.log('sorry,get openid fail')
-            }
-          });
-        }else{
-          //如果已经拒绝过授权的家伙，有openid但是没有userinfo，则直接发起授权， 不再请求openid
-          console.log('has openid without userinfo')
-          that.getUserInfo(function(sign1,res1){
-            if(sign1==1){
-              //添加进用户表
-              that.addUser();
-              console.log(that.globalData)
-              callback(true)
-            }else{
-              callback(false)
-              console.log(that.globalData)
-              console.log('sorry,get userinfo fail still')
-            }
-          });
-        }
-      }else{
-        this.addUser();
-        callback(true);
-      }
-    }else{
-      console.log('existuser')
-      callback(true);
-    }
-  },
-  // lazy loading openid
-  getUserOpenId: function(callback) {
+  getLogin: function(callback) {
     var self = this
-    if (self.globalData.openid) {
-      console.log('already')
-      callback(1,self.globalData.openid)
-    } else {
-      wx.login({
-        success: function(data) {
-          self.globalData.hasLogin=true
-          wx.setStorageSync('hasLogin', true)
-          wx.request({
-            url: openIdUrl,
-            method:'POST',
-            data: {
-              code: data.code
-            },
-            success: function(res) {
-              console.log('拉取openid成功', res.data.openid)
-              self.globalData.openid = res.data.openid
-              wx.setStorageSync('openid', res.data.openid)
-              callback(1,self.globalData.openid)
-            },
-            fail: function(err) {
-              console.log('拉取用户openid失败，将无法正常使用开放接口等服务', err)
-              callback(0,err)
-            }
-          })
-        },
-        fail: function(err) {
-          console.log('wx.login 接口调用失败，将无法正常使用开放接口等服务', err)
-          callback(0,err)
-        }
-      })
-    }
-  },
-  getUserInfo:function(callback){
-    var self = this
-    if(self.globalData.userInfo==null){
-      if(self.globalData.hasLogin==false){
+    wx.checkSession({
+      success: function(res) {
+        console.log(res)
+        //如果本地缓存被某种方式可以清除，这里就需要再次判断本地缓存的session，若空，重新login
+        //如果多端登录，微信服务器表示已授权而本地没有授权信息，重新login
+        if(self.globalData.thirdSession==null){
           wx.login({
             success: function(data) {
-              self.globalData.hasLogin=true
-              wx.getUserInfo({
-                success: function(res) {
-                  self.globalData.userInfo= res.userInfo
-                  self.globalData.hasuserinfo=true
-                  wx.setStorageSync('hasuserinfo', true)
-                  callback(1,res.userInfo)
-                  wx.setStorageSync('userInfo', res.userInfo)
-                },
-                fail:function(err){
-                  callback(0,err)
-                  console.log(err)
+              console.log(data)
+              var postdata={code:data.code};
+              self.req('login',postdata,'POST',function(sign,backdata){
+                if(sign==1){
+                  console.log('登陆成功！',backdata)
+                  self.globalData.openid = backdata.data.data.openid
+                  wx.setStorageSync('openid', backdata.data.data.openid)
+                  self.globalData.thirdSession = backdata.data.data.thirdSession
+                  wx.setStorageSync('thirdSession', backdata.data.data.thirdSession)
+                  callback(1)
+                }else{
+                  console.log('登录失败，将无法正常使用开放接口等服务', backdata)
+                  callback(0)
                 }
               })
             },
             fail: function(err) {
               console.log('wx.login 接口调用失败，将无法正常使用开放接口等服务', err)
-              callback(0,err)
-              console.log(err)
+              callback(0)
             }
           })
         }else{
-
-          wx.getUserInfo({
-            success: function(res) {
-              self.globalData.hasLogin=true
-              self.globalData.hasuserinfo=true
-              self.globalData.userInfo= res.userInfo
-              wx.setStorageSync('userInfo', res.userInfo)
-              wx.setStorageSync('hasuserinfo', true)
-              callback(1,res.userInfo)
+          callback(1)
+        }
+      },
+      fail: function (res) {
+        wx.login({
+            success: function(data) {
+              console.log(data)
+              var postdata={code:data.code};
+              self.req('login',postdata,'POST',function(sign,backdata){
+                if(sign==1){
+                  console.log('登陆成功！',backdata)
+                  self.globalData.openid = backdata.data.data.openid
+                  wx.setStorageSync('openid', backdata.data.data.openid)
+                  self.globalData.thirdSession = backdata.data.data.thirdSession
+                  wx.setStorageSync('thirdSession', backdata.data.data.thirdSession)
+                  callback(1)
+                }else{
+                  console.log('登录失败，将无法正常使用开放接口等服务', backdata)
+                  callback(0)
+                }
+              })
             },
-            fail:function(err){
-              console.log(err)
-              callback(0,err)
+            fail: function(err) {
+              console.log('wx.login 接口调用失败，将无法正常使用开放接口等服务', err)
+              callback(0)
             }
           })
-        }
-      }else{
-        //console.log('already')
-        callback(1,self.globalData.userInfo)
+        //console.log(self.globalData)
       }
-    
+    });
+  },
+  getUserInfo:function(callback){
+    //各页面调用此方法，以验证用户是否授权
+    var self = this
+    this.getLogin(function(sign){
+      if(sign==0){
+        callback(0);
+      }else{
+        if(self.globalData.userInfo==null){
+            wx.getUserInfo({
+                success: function(res) {
+                  self.globalData.userInfo= res.userInfo
+                  self.globalData.hasuserinfo=true
+                  wx.setStorageSync('hasuserinfo', true)
+                  wx.setStorageSync('userInfo', res.userInfo)
+                  self.addUser()
+                  callback(1)
+                },
+                fail:function(err){
+                  callback(0)
+                  console.log(err)
+                }
+            })
+          }else{
+            callback(1)
+        }
+      }
+    });
+
   },
   addUser:function(){
+    //每次授权后添加用户，若存在，后台判断后不操作
     var self = this
-    wx.request({
-      url: apiUrl+'adduser', 
-      method:'POST',
-      data: {
+    var data={
         openid:this.globalData.openid,
         name:this.globalData.userInfo.nickName,
         avatar:this.globalData.userInfo.avatarUrl,
-        city:this.globalData.userInfo.city,
         country:this.globalData.userInfo.country,
+        city:this.globalData.userInfo.city,
         province:this.globalData.userInfo.province,
         gender:this.globalData.userInfo.gender
-      },
+      };
+    self.req('adduser',data,'POST',function(sign,backdata){
+      //
+    })
+  },
+  req:function(api,data,method,callback){
+    //请求接口和处理返回的统一方法
+    var theapp=this
+    wx.request({
+      url: apiUrl+api,
+      method:method,
+      data: data,
       header: {
-          'content-type': 'application/json'
+          'Content-Type': 'application/json',
+          'thirdSession':theapp.globalData.thirdSession
       },
       success: function(res) {
-        console.log(res);
-        if((res.data.code==200)||(res.data.code==201)){
-          self.globalData.existuser=true
-          wx.setStorageSync('existuser', true)
+        console.log(res)
+        if(res.data.status==1){
+          callback(1,res)
+        }else if(res.data.status==0){
+          callback(-1,res)
+        }else if(res.data.status==2){
+          callback(2,res)
+        }else{
+          callback(0,res)
         }
       },
-      fail:function(err){
-        console.log(err)
+      fail: function(res) {
+        console.log(res)
+        callback(0,res)
       }
-    });
+    })
   },
   getCity:function(callback,sign){
     //sign==1时是relocate
@@ -238,27 +203,18 @@ App({
         success: function(res) {
           wx.hideLoading()
           console.log(res)
-          wx.request({
-            url: apiUrl+'getcity', 
-            method:'POST',
-            data: {
-              lat:res.latitude,
-              lng:res.longitude
-            },
-            header: {
-                'content-type': 'application/json'
-            },
-            success: function(res) {
-              console.log(res);
-              wx.setStorageSync('cityname', res.data.result.addressComponent.city)
-              wx.setStorageSync('citycode', res.data.result.cityCode)
-              self.globalData.cityname= res.data.result.addressComponent.city
-              self.globalData.citycode= res.data.result.cityCode
-              callback(1,res.data.result.cityCode,res.data.result.addressComponent.city)
-            },
-            fail:function(err){
-              callback(0)
-            }
+          var postdata={
+            lat:res.latitude,
+            lng:res.longitude
+          }
+          self.req('getcity',postdata,'POST',function(backsign,backdata){
+
+              wx.setStorageSync('cityname', backdata.data.result.addressComponent.city)
+              wx.setStorageSync('citycode', backdata.data.result.cityCode)
+              self.globalData.cityname= backdata.data.result.addressComponent.city
+              self.globalData.citycode= backdata.data.result.cityCode
+              callback(1,backdata.data.result.cityCode,backdata.data.result.addressComponent.city)
+
           })
         },
         fail:function(err){
@@ -272,4 +228,4 @@ App({
     }
     
   }
-})
+});

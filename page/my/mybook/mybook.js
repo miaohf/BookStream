@@ -25,35 +25,23 @@ Page({
           title: '正在加载',
     });
     var that=this
-    wx.request({
-      url: apiUrl+'mybook', 
-        method:'POST',
-        data: {
-          openid:app.globalData.openid
-        },
-        
-        header: {
-            'content-type': 'application/json'
-        },
-        success: function(res) {
-          console.log(res)
-          wx.hideLoading()
+    app.req('mybook','','POST',function(backsign,backdata){
+      if(backsign==1){
+        wx.hideLoading()
           that.setData({
-            books:res.data.books,
+            books:backdata.data.data.books,
             'user.avatar':app.globalData.userInfo.avatarUrl,
-            num:res.data.num,
-            borrownum:res.data.borrowcount
+            num:backdata.data.data.num,
+            borrownum:backdata.data.data.borrowcount
           })
-        },
-        fail:function(err){
-          console.log(err)
+        }else{
           wx.hideLoading()
         }
     })
   },
   iflocationjump:function(e){
     app.getCity(function(sign,city,cityname){
-
+      console.log(sign+','+cityname+','+city)
       if(sign==0){
         wx.showModal({
           title: '获取城市失败',

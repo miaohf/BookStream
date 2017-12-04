@@ -40,46 +40,40 @@ Page({
           title: '正在加载',
       });
       var that=this
-      wx.request({
-        url: apiUrl+'thebook', 
-        method:'POST',
-        data: {
-          id:options.id,
-          openid:app.globalData.openid
-        },
-        header: {
-            'content-type': 'application/json'
-        },
-        success: function(res) {
+      var postdata={
+        id:options.id,
+        openid:app.globalData.openid
+      }
+      app.req('thebook',postdata,'POST',function(backsign,backdata){
+        if(backsign==1){
           wx.hideLoading()
-          console.log(res);
           that.setData({
-            book:res.data.book,
-            comments:res.data.comments,
-            hasstar:res.data.star.hasstar,
-            nowstarnum:res.data.star.nowstarnum
+            book:backdata.data.data.book,
+            comments:backdata.data.data.comments,
+            hasstar:backdata.data.data.star.hasstar,
+            nowstarnum:backdata.data.data.star.nowstarnum
           });
           wx.setNavigationBarTitle({
             title:that.data.book.name
           });
-          if(res.data.borrower){
+          if(backdata.data.data.borrower){
             that.setData({
-              borrower:res.data.borrower
+              borrower:backdata.data.data.borrower
             })
             console.log(that.data)
           }
-        },
-        fail:function(err){
+        }else{
           wx.hideLoading()
-          console.log(err)
         }
-      });
+      })
     }else{
       wx.showModal({
         title: "抱歉",
         content: "参数错误，请稍后再试！",
         success: function(res) {
-          
+          wx.navigateBack({
+            delta: -1
+          });
         }
       });
     }
@@ -115,7 +109,7 @@ Page({
   alertcommentbox:function(event){
     var that=this
     var app = getApp()
-    app.toGetUser(function(sign){
+    app.getUserInfo(function(sign){
       if(sign){
         console.log('弹出评论框')
         that.setData({
@@ -172,36 +166,26 @@ Page({
           title: '正在加载',
       });
       //request
-      wx.request({
-        url: apiUrl+'addcomment', 
-      method:'POST',
-      data: {
+      var postdata={
         bookid:that.data.book.id,
         comment:e.detail.value.comment,
         openid:app.globalData.openid,
         name:app.globalData.userInfo.nickName,
         avatar:app.globalData.userInfo.avatarUrl
-      },
-      header: {
-          'content-type': 'application/json'
-      },
-      success: function(res) {
-        wx.hideLoading()
-        console.log(res);
-        if(res.data.code==200){
+      }
+      app.req('addcomment',postdata,'POST',function(backsign,backdata){
+        if(backsign==1){
+          wx.hideLoading()
           that.hidecommentbox();
           var oricomment=that.data.comments;
-          var newcomment=oricomment.concat(res.data.comment);
+          var newcomment=oricomment.concat(backdata.data.data.comment);
           that.setData({
             comments:newcomment
           })
+        }else{
+           wx.hideLoading()
         }
-      },
-      fail:function(err){
-        console.log(err)
-        wx.hideLoading()
-      }
-      });
+      })
     }else{
       console.log('please input')
     }
@@ -216,7 +200,7 @@ Page({
   },
   takestar:function(){
     var that=this
-    app.toGetUser(function(sign){
+    app.getUserInfo(function(sign){
       if(sign){
         console.log('star')
         that.setData({
@@ -273,22 +257,14 @@ Page({
     wx.showLoading({
           title: '正在加载',
       });
-    wx.request({
-      url:apiUrl+'scoreit',
-      method:'POST',
-      data:{
-        openid:app.globalData.openid,
-        bookid:that.data.book.id,
-        star:nowstarnum
-      },
-      header:{
-        'content-type': 'application/json'
-      },
-      success:function(res){
-        console.log(res)
+    var postdata={
+      openid:app.globalData.openid,
+      bookid:that.data.book.id,
+      star:nowstarnum
+    }
+    app.req('scoreit',postdata,'POST',function(backsign,backdata){
+      if(backsign==1){
         wx.hideLoading()
-        if(res.data.code==200){
-          
           wx.showToast({
               title: '成功',
               icon: 'success',
@@ -301,34 +277,25 @@ Page({
                   });
               }
             })
-        }else if(res.data.code==201){
-          wx.showModal({
+       
+      }else if(backsign==2){
+        wx.hideLoading()
+        wx.showModal({
             title: '抱歉',
             content: '您已经评过星啦',
             success: function(res) {
 
             }
           })
-        }else{
-          wx.showModal({
+      }else{
+        wx.hideLoading()
+        wx.showModal({
             title: '抱歉',
             content: '评星失败，请稍后再试',
             success: function(res) {
 
             }
           })
-        }
-      },
-      fail:function(err){
-        console.log(err)
-        wx.hideLoading()
-        wx.showModal({
-          title: '抱歉',
-          content: '评星失败，请稍后再试',
-          success: function(res) {
-
-          }
-        })
       }
     })
   },
@@ -357,9 +324,9 @@ Page({
           title: '抱歉',
           content: '无法得到授权，请稍后再试',
           success: function(res) {
-            if (res.confirm) {
+            if (backdata.confirm) {
               console.log('用户点击确定')
-            } else if (res.cancel) {
+            } else if (backdata.cancel) {
               console.log('用户点击取消')
             }
           }
@@ -391,11 +358,7 @@ Page({
           title: '正在提交',
       })
 
-      //request
-      wx.request({
-        url: apiUrl+'borrowit', 
-      method:'POST',
-      data: {
+      var postdata={
         bookid:that.data.book.id,
         comment:e.detail.value.borrow,
         openid:app.globalData.openid,
@@ -403,34 +366,27 @@ Page({
         avatar:app.globalData.userInfo.avatarUrl,
         formid:e.detail.formId,
         citycode:app.globalData.citycode
-      },
-      header: {
-          'content-type': 'application/json'
-      },
-      success: function(res) {
-        wx.hideLoading()
-        console.log(res);
-        if(res.data.code==200){
+      }
+      app.req('borrowit',postdata,'POST',function(backsign,backdata){
+        if(sign==1){
+          wx.hideLoading()
           that.hideborrowbox();
           wx.showToast({
             title: '成功',
             icon: 'success',
             duration: 1000
           })
+        }else{
+          wx.hideLoading()
+          wx.showModal({
+            title: '失败',
+            content: '请稍后再试',
+            success: function(res) {
+              that.hideborrowbox();
+            }
+          })
         }
-      },
-      fail:function(err){
-        wx.hideLoading()
-        console.log(err)
-        wx.showModal({
-          title: '失败',
-          content: '请稍后再试',
-          success: function(res) {
-            that.hideborrowbox();
-          }
-        })
-      }
-      });
+      })
     }else{
       console.log('please input')
       wx.showModal({

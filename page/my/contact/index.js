@@ -1,7 +1,7 @@
 var app = getApp()
 Page({
   data: {
-    avatar:'https://www.aliencat.cn/books/public/images/myavatar.jpg',
+    avatar:'https://www.aliencat.cn/images/myavatar.jpg',
     streamimg:'../../../image/icon.png'
     },
   onLoad: function(options) {

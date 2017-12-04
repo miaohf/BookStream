@@ -45,11 +45,6 @@
       "iconPath": "image/bookshelf0.png",
       "selectedIconPath": "image/bookshelf.png",
       "text": "书架"
-    },{
-      "pagePath": "page/order/index",
-      "iconPath": "image/order0.png",
-      "selectedIconPath": "image/order.png",
-      "text": "榜单"
     }, {
       "pagePath": "page/my/index",
       "iconPath": "image/my0.png",

@@ -2,7 +2,7 @@
 .index-bd{width: 750rpx;overflow: hidden; padding:0;float: left;}
 
 
-#personal_head{position: relative;float: left;width: 750rpx;height: 420rpx;background-image: url('https://www.aliencat.cn/books/public/images/mybg.jpg');background-size: 100% 55%;margin-bottom: 20rpx;}
+#personal_head{position: relative;float: left;width: 750rpx;height: 420rpx;background-image: url('https://www.aliencat.cn/images/mybg.jpg');background-size: 100% 55%;margin-bottom: 20rpx;}
 #mid_box{position: absolute;z-index: 9;width: 180rpx;height: 220rpx;left:285rpx;top: 100rpx;}
 #mid_box image{width: 180rpx;height: 180rpx;border-radius: 50%;}
 #myname{width: 180rpx;height: 40rpx;font-size: 26rpx;line-height: 40rpx;color: #666;text-align: center;}

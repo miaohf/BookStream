@@ -24,29 +24,17 @@ Page({
   },
   onShow:function(){
     var that=this
-    app.toGetUser(function(sign){
+    app.getUserInfo(function(sign){
       if(sign==1){
-        wx.request({
-          url: apiUrl+'checkmine', 
-          method:'GET',
-          data: {
-            openid:app.globalData.openid
-          },
-          header: {
-              'content-type': 'application/json'
-          },
-          success: function(res) {
-            console.log(res);
+        app.req('checkmine','','GET',function(backsign,backdata){
+          if(backsign==1){
             that.setData({
-              mailcount:res.data.mails,
-              commentcount:res.data.comment,
-              borrowcount:res.data.borrow
+              mailcount:backdata.data.data.mails,
+              commentcount:backdata.data.data.comment,
+              borrowcount:backdata.data.data.borrow
             })
-          },
-          fail:function(err){
-            console.log(err)
           }
-        });
+        })
       }
     })
   },
@@ -81,7 +69,7 @@ Page({
   },
   loadpage:function(){
     var that=this
-    app.toGetUser(function(sign){
+    app.getUserInfo(function(sign){
       if(sign==1){
         that.setData({
           'my.avatar':app.globalData.userInfo.avatarUrl,
@@ -91,36 +79,19 @@ Page({
         wx.showLoading({
           title: '正在加载',
         });
-        wx.request({
-          url: apiUrl+'me', 
-          method:'POST',
-          data: {
-              openid:app.globalData.openid
-          },
-          header: {
-              'content-type': 'application/json'
-          },
-          success: function(res) {
-            console.log(res)
-            wx.hideLoading()
-            if(res.data.code==200){
-              that.setData({
-                'my.ordernum':res.data.me.ordernum,
-                'my.booknum':res.data.me.booknum,
-                'my.sign':res.data.me.sign
+        app.req('me','','POST',function(backsign,backdata){
+          if(sign==1){
+            that.setData({
+                'my.ordernum':backdata.data.data.me.ordernum,
+                'my.booknum':backdata.data.data.me.booknum,
+                'my.sign':backdata.data.data.me.sign
               })
-            }else{
-              that.setData({
-                'my.isme':0
-              })
-            }
-          },
-          fail:function(err){
-            wx.hideLoading()
+          }else{
             that.setData({
                 'my.isme':0
-            })
+              })
           }
+          wx.hideLoading()
         })
       }else{
         that.setData({

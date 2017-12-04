@@ -24,14 +24,14 @@ Page({
     })
   },
   onReachBottom:function(e){
-    this.asklist(0);
+    this.asklist(1);
   },
   onPullDownRefresh:function(e){
     this.setData({
       nowlist_guide:0,
       alldone:0
     });
-    this.asklist(1)
+    this.asklist(0)
   },
   asklist:function(sign){
     if(this.data.alldone==0){
@@ -39,34 +39,28 @@ Page({
         title: '正在加载',
       })
       var that=this
-      wx.request({
-        url: apiUrl+'kindbooks', 
-        method:'POST',
-        data: {
-          kind:this.data.options.kind_en,
-          guide:this.data.nowlist_guide,
-          onlycity:app.globalData.onlycity
-        },
-        header: {
-            'content-type': 'application/json'
-        },
-        success: function(res) {
+      var postdata={
+        kind:this.data.options.kind_en,
+        guide:this.data.nowlist_guide,
+        onlycity:app.globalData.onlycity
+      }
+      app.req('kindbooks',postdata,'POST',function(backsign,backdata){
+        if(backsign==1){
           wx.hideLoading()
-          console.log(res)
-          if(res.data.code==200){
-            if(sign==1){
+          if(backdata.data.data.data!=''){
+            if(sign==0){
               var list=[];
             }else{
               var list=that.data.list
             }
-            var addlist=res.data.data
+            var addlist=backdata.data.data.data
             var newlist={}
             newlist=list.concat(addlist)
             list=addlist=null
             console.log(newlist)
             that.setData({
               list:newlist,
-              nowlist_guide:res.data.guide.created_at
+              nowlist_guide:backdata.data.data.guide.created_at
             })
             wx.stopPullDownRefresh()
           }else{
@@ -81,15 +75,14 @@ Page({
             })
             wx.stopPullDownRefresh()
           }
-        },
-        fail:function(err){
+        }else{
           wx.hideLoading()
-          console.log(err)
+          console.log(backdata)
           wx.stopPullDownRefresh()
         }
       })
     }
-    
+    console.log(this.data.list)
   }
 })
 

@@ -14,13 +14,13 @@ var config = {
     host,
 
     // 登录地址，用于建立会话
-    loginUrl: `https://www.aliencat.cn/books/public/api/login`,
+    loginUrl: `https://www.aliencat.cn/api/book/login`,
 
     // 测试的请求地址，用于测试会话
-    requestUrl: `https://www.aliencat.cn/books/public/api/login`,
+    requestUrl: `https://www.aliencat.cn/api/book/login`,
 
     // 用code换取openId
-    openIdUrl: `https://www.aliencat.cn/books/public/api/login`,
+    openIdUrl: `https://www.aliencat.cn/api/book/login`,
 
     // 测试的信道服务接口
     tunnelUrl: `https://${host}/tunnel`,
@@ -37,7 +37,7 @@ var config = {
     // 下载示例图片接口
     downloadExampleUrl: `https://${host}/static/weapp.jpg`,
 
-    apiUrl: `https://www.aliencat.cn/books/public/api/`
+    apiUrl: `https://www.aliencat.cn/api/book/`
 };
 
 
