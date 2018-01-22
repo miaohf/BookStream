@@ -23,16 +23,16 @@
 	      <input class="weui-input" value="{{book.title}}" disabled></input>
 	    </view>
 	  </view>
-	  <view class="weui-cell">
+	  <!-- <view class="weui-cell">
 	    <view class="weui-cell__hd"><label class="weui-label">ISBN：</label></view>
 	    <view class="weui-cell__bd">
 	      <input class="weui-input" value="{{book.isbn}}" disabled></input>
 	    </view>
-	  </view>
+	  </view> -->
 		
 	</view>
 
-	<view class="weui-cells weui-cells_form" style="margin-top:50rpx">
+	<view class="weui-cells weui-cells_form" style="margin-top:35rpx">
 	 	<view class="weui-cell">
 	    	<view class="weui-cell__hd" style="color: #999;font-size: 28rpx">补全信息</view>
 	    </view>
@@ -59,7 +59,7 @@
 		  </view>
 		  <view class="weui-cell" style="border-bottom: 1px solid #eee">
 		    <view class="weui-cell__bd">
-		      <textarea class="weui-textarea" name="story" placeholder="请输入您和这本书的经历和故事" rows="3" style="height: 90px"></textarea>
+		      <textarea class="weui-textarea" name="story" placeholder="一句话描述您的书" rows="3" style="height: 90px"></textarea>
 		      <view class="weui-textarea-counter"><span>0</span>/200</view>
 		    </view>
 		  </view>

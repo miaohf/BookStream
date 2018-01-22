@@ -9,11 +9,11 @@ Page({
     ordernum:0,
     booknum:0,
     isme:0,
+    sign:''
+   },
     mailcount:0,
     commentcount:0,
     borrowcount:0,
-    sign:''
-   }
     },
   onLoad: function(options) {
     console.log(app.globalData)
@@ -31,8 +31,10 @@ Page({
             that.setData({
               mailcount:backdata.data.data.mails,
               commentcount:backdata.data.data.comment,
-              borrowcount:backdata.data.data.borrow
+              borrowcount:backdata.data.data.borrow,
+              'my.avatar':backdata.data.data.avatar
             })
+            app.globalData.userInfo.avatarUrl=backdata.data.data.avatar
           }
         })
       }
@@ -91,8 +93,8 @@ Page({
                 'my.isme':0
               })
           }
-          wx.hideLoading()
         })
+        wx.hideLoading()
       }else{
         that.setData({
           'my.isme':0

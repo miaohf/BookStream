@@ -32,7 +32,8 @@ Page({
     greystar:'/image/book/star_grey.png',
     yellowstar:'/image/book/star_yellow.png',
     hasstar:false,
-    borrower:[]
+    borrower:[],
+    ilike:0
     },
   onLoad: function(options) {
     if(options.id){
@@ -51,7 +52,8 @@ Page({
             book:backdata.data.data.book,
             comments:backdata.data.data.comments,
             hasstar:backdata.data.data.star.hasstar,
-            nowstarnum:backdata.data.data.star.nowstarnum
+            nowstarnum:backdata.data.data.star.nowstarnum,
+            ilike:backdata.data.data.ilike
           });
           wx.setNavigationBarTitle({
             title:that.data.book.name
@@ -178,7 +180,7 @@ Page({
           wx.hideLoading()
           that.hidecommentbox();
           var oricomment=that.data.comments;
-          var newcomment=oricomment.concat(backdata.data.data.comment);
+          var newcomment=oricomment.concat(backdata.data.data);
           that.setData({
             comments:newcomment
           })
@@ -299,10 +301,58 @@ Page({
       }
     })
   },
+  likeit:function(){
+    var that=this;
+    wx.showLoading({
+          title: '正在加载',
+      });
+    var postdata={
+      bookid:that.data.book.id
+    }
+    app.req('likeit',postdata,'POST',function(backsign,backdata){
+      if(backsign==1){
+        wx.hideLoading()
+        if(that.data.ilike==0){
+          wx.showToast({
+            title: '点赞成功',
+            icon: 'success',
+            duration: 1500,
+            complete:function(){
+                that.setData({
+                  ilike:1
+                });
+            }
+          })
+        }else{
+          wx.showToast({
+            title: '取消赞成功',
+            icon: 'success',
+            duration: 1500,
+            complete:function(){
+                that.setData({
+                  ilike:0
+                });
+            }
+          })
+        }
+          
+       
+      }else{
+        wx.hideLoading()
+        wx.showModal({
+            title: '抱歉',
+            content: '操作失败，请稍后再试',
+            success: function(res) {
+
+            }
+          })
+      }
+    })
+  },
   iwantborrow:function(e){
     var that=this
     var app = getApp()
-    app.toGetUser(function(sign){
+    app.getUserInfo(function(sign){
       if(sign){
         console.log('弹出借书框')
         that.setData({
@@ -368,7 +418,7 @@ Page({
         citycode:app.globalData.citycode
       }
       app.req('borrowit',postdata,'POST',function(backsign,backdata){
-        if(sign==1){
+        if(backsign==1){
           wx.hideLoading()
           that.hideborrowbox();
           wx.showToast({

@@ -1,0 +1,9 @@
+@import "../common/index.wxss";
+
+.kind-list-item-hd{position: relative;}
+.kind-list-img{width: 110rpx;height: 160rpx}
+.kind-list-text{width: 350rpx;padding-left: 40rpx;line-height: 40rpx}
+.kind-list-text text{font-size: 22rpx;color:#333;}
+.kind-list-text text:first-child{font-size: 26rpx;color:#3377aa;}
+.user-img{width: 70rpx;height: 70rpx;border-radius: 35rpx;display: block;}
+.user_part{width: 100rpx;background-color: #555}

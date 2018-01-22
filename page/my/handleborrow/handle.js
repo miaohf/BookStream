@@ -19,60 +19,44 @@ Page({
     wx.showLoading({
           title: '正在加载',
       });
-    wx.request({
-    	url:apiUrl+'handleborrow',
-    	method:'POST',
-    	data:{
-    		id:id
-    	},
-    	header:{
-    		'content-type':'application/json'
-    	},
-    	success:function(res){
-    		console.log(res)
+    var postdata={
+      id:id
+    }
+    app.req('handleborrow',postdata,'POST',function(backsign,backdata){
+      if(backsign==1){
         wx.hideLoading()
-    		that.setData({
-    			'info.bookimg':res.data.thebook.image_m,
-    			'info.bookname':res.data.thebook.name,
-    			'info.borrowname':res.data.from.name,
-    			'info.gender':res.data.from.gender,
-    			'info.booksnum':res.data.from.booksnum,
-    			'info.time':res.data.record.updated_at,
-    			'info.comment':res.data.record.comment,
-    			'info.useravatar':res.data.from.avatar,
-          'info.status':res.data.record.status
-    		})
-    	},
-    	fail:function(err){
-    		console.log(err)
+        that.setData({
+          'info.bookimg':backdata.data.data.thebook.image_m,
+          'info.bookname':backdata.data.data.thebook.name,
+          'info.borrowname':backdata.data.data.from.name,
+          'info.gender':backdata.data.data.from.gender,
+          'info.booksnum':backdata.data.data.from.booksnum,
+          'info.time':backdata.data.data.record.updated_at,
+          'info.comment':backdata.data.data.record.comment,
+          'info.useravatar':backdata.data.data.from.avatar,
+          'info.status':backdata.data.data.record.status
+        })
+      }else{
         wx.hideLoading()
-    	}
+      }
     })
   },
   handleit:function(e){
   	var choose=e.detail.target.dataset.choose;
-  	app.toGetUser(function(sign){
+  	app.getUserInfo(function(sign){
   		if(sign){
         wx.showLoading({
           title: '正在加载',
       });
-  			wx.request({
-		  		url:apiUrl+'handleborrowre',
-		  		method:'POST',
-		  		data:{
-		  			openid:app.globalData.openid,
-		  			choose:choose,
+        var postdata={
+          choose:choose,
             id:thisid,
             formid:e.detail.formId
-		  		},
-		  		header:{
-		  			'content-type':'application/json'
-		  		},
-		  		success:function(res){
-		  			console.log(res)
-            wx.hideLoading()
-            if(res.data.code==200){
-                if(choose==1){
+        }
+        app.req('handleborrowre',postdata,'POST',function(backsign,backdata){
+          wx.hideLoading()
+          if(backsign==1){
+              if(choose==1){
                   wx.showModal({
                     title: '处理成功',
                     content: '敬告：该书目前状态为待借，与书友交接成功后请您手动进入“我的书”内设置状态。',
@@ -107,14 +91,14 @@ Page({
                 prepage.setData({
                   recieves:recieves
                 })
-            }else if(res.data.code==404){
-              wx.showModal({
+          }else if(backsign==4){
+            wx.showModal({
                 title: '处理失败',
                 content: '该申请已过期或失效',
                 success: function(res) {
                 }
               })
-            }else{
+          }else{
               wx.showModal({
                 title: '处理失败',
                 content: '请稍后再试',
@@ -122,12 +106,8 @@ Page({
                 }
               })
             }
-		  		},
-		  		fail:function(err){
-		  			console.log(err)
-            wx.hideLoading()
-		  		}
-		  	})
+        })
+ 
   		}else{
   			//
   		}

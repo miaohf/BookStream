@@ -49,6 +49,9 @@ App({
     if(citycode){
       this.globalData.citycode=citycode
     }
+    if(onlycity){
+      this.globalData.onlycity=onlycity
+    }
     this.getLogin(function(){});
     console.log(this.globalData)
   },
@@ -173,19 +176,11 @@ App({
       },
       success: function(res) {
         console.log(res)
-        if(res.data.status==1){
-          callback(1,res)
-        }else if(res.data.status==0){
-          callback(-1,res)
-        }else if(res.data.status==2){
-          callback(2,res)
-        }else{
-          callback(0,res)
-        }
+        callback(res.data.status,res)
       },
       fail: function(res) {
         console.log(res)
-        callback(0,res)
+        callback(-1,res)
       }
     })
   },

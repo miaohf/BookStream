@@ -7,6 +7,7 @@
   </view>
   </view>
 </view> -->
+
     <view class="page-section page-section-spacing swiper" id="homepage_banner">
       <swiper indicator-dots="{{swiper.indicatorDots}}"
         autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}">
@@ -19,6 +20,7 @@
         </block>
       </swiper>
     </view>
+
 
 <view class="index">
   <view class="index-bd">

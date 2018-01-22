@@ -16,21 +16,14 @@ Page({
     wx.showLoading({
           title: '正在加载',
       });
-    wx.request({
-      url: apiUrl+'themail', 
-      method:'GET',
-      data: {
-        id:options.id,
-        openid:app.globalData.openid
-      },
-      header: {
-          'content-type': 'application/json'
-      },
-      success: function(res) {
-        console.log(res);
-        wx.hideLoading()
+    var getdata={
+      id:options.id
+    }
+    app.req('themail',getdata,'GET',function(backsign,backdata){
+      if(backsign==1){
+         wx.hideLoading()
         that.setData({
-          themail:res.data.themail
+          themail:backdata.data.data.themail
         });
         var pages=getCurrentPages();
         var prepage=pages[pages.length-2]
@@ -39,9 +32,7 @@ Page({
         prepage.setData({
           recieves:recieves
         })
-      },
-      fail:function(err){
-        console.log(err)
+      }else{
         wx.hideLoading()
         wx.showModal({
           title:'失败',
@@ -50,7 +41,7 @@ Page({
           }
         })
       }
-    });
+    })
   },
   response:function(){
   	this.setData({response:1})
@@ -63,25 +54,16 @@ Page({
       wx.showLoading({
           title: '正在加载',
       });
-	    wx.request({
-	      url: apiUrl+'sendmail', 
-	      method:'POST',
-	      data: {
-	        openid:app.globalData.openid,
-	        toopenid:this.data.themail.fromopenid,
-	        message:mail
-	      },
-	      header: {
-	          'content-type': 'application/json'
-	      },
-	      success: function(res) {
-	        console.log(res);
-          wx.hideLoading()
-	        if(res.data.code==200){
-	        	wx.showModal({
-		        	title:'成功',
-		        	content:'邮件发送成功',
-		        	success:function(){
+      var postdata={
+        toopenid:this.data.themail.fromopenid,
+        message:mail
+      }
+      app.req('sendmail',postdata,'POST',function(backsign,backdata){
+        if(backsign==1){
+            wx.showModal({
+              title:'成功',
+              content:'邮件发送成功',
+              success:function(){
                 var pages=getCurrentPages();
                 var prepage=pages[pages.length-2]
                 prepage.bar(2)
@@ -89,36 +71,25 @@ Page({
                 wx.navigateBack({
                   delta:1
                 })
-		        	}
-		        })
-	        }else if(res.data.code==404){
-	        	wx.showModal({
-		        	title:'失败',
-		        	content:'邮件发送失败，找不到收件人',
-		        	success:function(){
-		        	}
-		        })
-	        }else{
-	        	wx.showModal({
-		        	title:'失败',
-		        	content:'邮件发送失败，请稍后再试',
-		        	success:function(){
-		        	}
-		        })
-	        }
-	        
-	      },
-	      fail:function(err){
-	        console.log(err)
-          wx.hideLoading()
+              }
+            })
+        }else if(backsign==4){
+            wx.showModal({
+              title:'失败',
+              content:'邮件发送失败，找不到收件人',
+              success:function(){
+              }
+            })
+        }else{
           wx.showModal({
-            title:'失败',
-            content:'邮件发送失败，请稍后再试',
-            success:function(){
-            }
-          })
-	      }
-	    });
+              title:'失败',
+              content:'邮件发送失败，请稍后再试',
+              success:function(){
+              }
+            })
+        }
+        wx.hideLoading()
+      })
   	}else{
   		wx.showModal({
           title: '抱歉',

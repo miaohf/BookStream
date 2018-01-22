@@ -134,33 +134,25 @@ Page({
   getrecieve:function(sign){
   	var that=this
   	isscrolling=1;
-  	wx.request({
-	      url: apiUrl+'getrecieve_borrow', 
-	      method:'POST',
-	      data: {
-	      	guide:this.data.guide,
-	      	openid:app.globalData.openid
-	      },
-	      header: {
-	          'content-type': 'application/json'
-	      },
-	      success: function(res) {
-	      	isscrolling=0;
-	      	wx.hideLoading()
-	        console.log(res)
-	        if(res.data.code==200){
-	        	if(sign==0){
-		            var now_recieves=that.data.recieves;
-		        }else{
-		        	var now_recieves=[];
-		        }
-		        var new_recieves=now_recieves.concat(res.data.res);
-		        that.setData({
-		          recieves:new_recieves,
-		          guide:res.data.guide.updated_at
-		        })
-	        }else if(res.data.code==404){
-	        	wx.showToast({
+  	var postdata={
+  		guide:this.data.guide
+  	}
+  	app.req('getrecieve_borrow',postdata,'POST',function(backsign,backdata){
+  		isscrolling=0;
+	    wx.hideLoading()
+  		if(backsign==1){
+			if(sign==0){
+	            var now_recieves=that.data.recieves;
+	        }else{
+	        	var now_recieves=[];
+	        }
+	        var new_recieves=now_recieves.concat(backdata.data.data.res);
+	        that.setData({
+	          recieves:new_recieves,
+	          guide:backdata.data.data.guide.updated_at
+	        })
+  		}else if(backsign==4){
+  			wx.showToast({
 				  title: '到底啦',
 				  icon: 'success',
 				  duration: 1200
@@ -168,59 +160,38 @@ Page({
 				that.setData({
 					isdone:1
 				})
-	        }else{
-	        	wx.showModal({
+			}else{
+				wx.showModal({
 	        		title:'抱歉',
 	        		content:'请稍后再试',
 	        		success:function(){}
 	        	})
-	        }
-	        wx.stopPullDownRefresh()
-	        
-	      },
-	      fail:function(err){
-	      	isscrolling=0;
-	      	wx.hideLoading()
-	      	wx.showModal({
-	    		title:'抱歉',
-	    		content:'请稍后再试',
-	    		success:function(){}
-	    	})
-	    	wx.stopPullDownRefresh()
-	    	
-	      }
-	    })
+			}
+			wx.stopPullDownRefresh()
+  	})
   },
   getsend:function(sign){
   	var that=this
   	isscrolling2=1;
-  	wx.request({
-	      url: apiUrl+'getsend_borrow', 
-	      method:'POST',
-	      data: {
-	      	guide:this.data.guide2,
-	      	openid:app.globalData.openid
-	      },
-	      header: {
-	          'content-type': 'application/json'
-	      },
-	      success: function(res) {
-	      	isscrolling2=0;
-	      	wx.hideLoading()
-	        console.log(res)
-	        if(res.data.code==200){
-	        	if(sign==0){
-		            var now_sends=that.data.sends;
-		        }else{
-		        	var now_sends=[];
-		        }
-		        var new_sends=now_sends.concat(res.data.res);
-		        that.setData({
-		          sends:new_sends,
-		          guide2:res.data.guide.updated_at
-		        })
-	        }else if(res.data.code==404){
-	        	wx.showToast({
+  	var postdata={
+  		guide:this.data.guide2
+  	}
+  	app.req('getsend_borrow',postdata,'POST',function(backsign,backdata){
+  		isscrolling2=0;
+	    wx.hideLoading()
+	    if(backsign==1){
+			if(sign==0){
+	            var now_sends=that.data.sends;
+	        }else{
+	        	var now_sends=[];
+	        }
+	        var new_sends=now_sends.concat(backdata.data.data.res);
+	        that.setData({
+	          sends:new_sends,
+	          guide2:backdata.data.data.guide.updated_at
+	        })
+  		}else if(backsign==4){
+  			wx.showToast({
 				  title: '到底啦',
 				  icon: 'success',
 				  duration: 1200
@@ -228,28 +199,15 @@ Page({
 				that.setData({
 					isdone2:1
 				})
-	        }else{
-	        	wx.showModal({
+		}else{
+			wx.showModal({
 	        		title:'抱歉',
 	        		content:'请稍后再试',
 	        		success:function(){}
 	        	})
-	        }
-	        wx.stopPullDownRefresh()
-	        
-	      },
-	      fail:function(err){
-	      	isscrolling2=0;
-	      	wx.hideLoading()
-	      	wx.showModal({
-	    		title:'抱歉',
-	    		content:'请稍后再试',
-	    		success:function(){}
-	    	})
-	    	wx.stopPullDownRefresh()
-	    	
-	      }
-	    })
+		}
+		wx.stopPullDownRefresh()
+  	})
   }
 })
 

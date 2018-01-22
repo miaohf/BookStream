@@ -28,39 +28,31 @@ Page({
         title: '正在加载',
       })
       var that=this
-      wx.request({
-        url: apiUrl+'ilend', 
-        method:'POST',
-        data: {
-          openid:app.globalData.openid,
-          guide:this.data.nowlist_guide,
-          bookid:bookid
-        },
-        header: {
-            'content-type': 'application/json'
-        },
-        success: function(res) {
-          wx.hideLoading()
-          console.log(res)
-          if(res.data.code==200){
-            if(sign==1){
+      var postdata={
+        openid:app.globalData.openid,
+        guide:this.data.nowlist_guide,
+        bookid:bookid
+      }
+      app.req('ilend',postdata,'POST',function(backsign,backdata){
+        wx.hideLoading()
+        if(backsign==1){
+          if(sign==1){
               var list=[];
             }else{
               var list=that.data.list
             }
-            var addlist=res.data.data
+            var addlist=backdata.data.data.data
             var newlist={}
             newlist=list.concat(addlist)
             list=addlist=null
             console.log(newlist)
             that.setData({
               list:newlist,
-              nowlist_guide:res.data.guide.created_at
+              nowlist_guide:backdata.data.data.guide.created_at
             })
             wx.stopPullDownRefresh()
-          }else{
-            console.log('done')
-            wx.showToast({
+        }else{
+          wx.showToast({
               title: '到底啦',
               icon: 'success',
               duration: 1200
@@ -69,14 +61,9 @@ Page({
               alldone:1
             })
             wx.stopPullDownRefresh()
-          }
-        },
-        fail:function(err){
-          wx.hideLoading()
-          console.log(err)
-          wx.stopPullDownRefresh()
         }
       })
+
     }
     
   }

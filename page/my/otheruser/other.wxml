@@ -13,6 +13,8 @@
       </view>
     </view>
 
+<view id="sign"  class="my_items" wx:if="{{(ta.sign!='')&&(ta.sign!=null)}}" style="margin-bottom: 20rpx">{{ta.sign}}</view>
+
 <!-- 排行 积分 会员等级等信息 -->
   <navigator url="../email/writemail?openid={{ta.openid}}&avatar={{ta.avatar}}" hover-class="" style="width: 750rpx;float: left;">
   <view id="sendmail">

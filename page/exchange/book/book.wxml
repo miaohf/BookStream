@@ -3,6 +3,10 @@
   <view class="index-bd">
 
     <view class="bookdetail">
+      <view id="likebtn">
+        <image wx:if="{{ilike==0}}" style="" mode="" src="/image/book/like.png" binderror="" bindload="" bindtap="likeit"></image>
+        <image wx:if="{{ilike==1}}" style="" mode="" src="/image/book/liked.png" binderror="" bindload="" bindtap="likeit"></image>
+      </view>
       <view id="info">
         <text> {{ book.name }} \n</text>
         <text> {{ book.average }}星 {{book.numRaters}}枚评星 \n</text>
@@ -92,7 +96,7 @@
         <text>8本藏书 156个赞 56条评论\n</text>
       </view>
       <view id="userstory">
-        <text> {{ '书友与本书的故事：' }} </text>{{book.story}}
+        <text> {{ '一句话书语：' }} </text>{{book.story}}
       </view>
     </view>
 

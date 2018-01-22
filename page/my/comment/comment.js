@@ -60,6 +60,7 @@ Page({
 	  		this.addmoreuser(0);
 	  	}
   	}else{
+  		console.log(isscrolling2)
   		if(isscrolling2==0){
 	  		this.addmoreuser(0);
 	  	}
@@ -85,7 +86,7 @@ Page({
   	}
   },
   addmoreuser:function(sign){
-  	
+  	console.log(sign)
 	if(sign==1){
 		/*第一次加载*/
 		wx.showLoading({
@@ -105,6 +106,7 @@ Page({
 	    }
 	}else{
 		if(this.data.bar==0){
+			console.log('recieves')
 			if(this.data.isdone==0){
 				wx.showLoading({
 			        title: '正在加载',
@@ -112,6 +114,7 @@ Page({
 	  		    this.getrecieve(sign);
 	  		}
 		}else{
+			console.log('send')
 			if(this.data.isdone2==0){
 				wx.showLoading({
 			        title: '正在加载',
@@ -125,33 +128,25 @@ Page({
   getrecieve:function(sign){
   	var that=this
   	isscrolling=1;
-  	wx.request({
-	      url: apiUrl+'getrecieve_comment', 
-	      method:'POST',
-	      data: {
-	      	guide:this.data.guide,
-	      	openid:app.globalData.openid
-	      },
-	      header: {
-	          'content-type': 'application/json'
-	      },
-	      success: function(res) {
-	      	isscrolling=0;
-	      	wx.hideLoading()
-	        console.log(res)
-	        if(res.data.code==200){
-	        	if(sign==0){
-		            var now_recieves=that.data.recieves;
-		        }else{
-		        	var now_recieves=[];
-		        }
-		        var new_recieves=now_recieves.concat(res.data.comments);
-		        that.setData({
-		          recieves:new_recieves,
-		          guide:res.data.guide.updated_at
-		        })
-	        }else if(res.data.code==404){
-	        	wx.showToast({
+  	var postdata={
+  		guide:this.data.guide
+  	}
+  	app.req('getrecieve_comment',postdata,'POST',function(backsign,backdata){
+  		isscrolling=0;
+	    wx.hideLoading()
+  		if(backsign==1){
+			if(sign==0){
+	            var now_recieves=that.data.recieves;
+	        }else{
+	        	var now_recieves=[];
+	        }
+	        var new_recieves=now_recieves.concat(backdata.data.data.comments);
+	        that.setData({
+	          recieves:new_recieves,
+	          guide:backdata.data.data.guide.updated_at
+	        })
+  		}else if(backsign==4){
+  			wx.showToast({
 				  title: '到底啦',
 				  icon: 'success',
 				  duration: 1200
@@ -159,59 +154,37 @@ Page({
 				that.setData({
 					isdone:1
 				})
-	        }else{
-	        	wx.showModal({
+  		}else{
+  			wx.showModal({
 	        		title:'抱歉',
 	        		content:'请稍后再试',
 	        		success:function(){}
 	        	})
-	        }
-	        wx.stopPullDownRefresh()
-	        
-	      },
-	      fail:function(err){
-	      	isscrolling=0;
-	      	wx.hideLoading()
-	      	wx.showModal({
-	    		title:'抱歉',
-	    		content:'请稍后再试',
-	    		success:function(){}
-	    	})
-	    	wx.stopPullDownRefresh()
-	    	
-	      }
-	    })
+  		}
+  		wx.stopPullDownRefresh()
+  	})
   },
   getsend:function(sign){
   	var that=this
   	isscrolling2=1;
-  	wx.request({
-	      url: apiUrl+'getsend_comment', 
-	      method:'POST',
-	      data: {
-	      	guide:this.data.guide2,
-	      	openid:app.globalData.openid
-	      },
-	      header: {
-	          'content-type': 'application/json'
-	      },
-	      success: function(res) {
-	      	isscrolling2=0;
-	      	wx.hideLoading()
-	        console.log(res)
-	        if(res.data.code==200){
-	        	if(sign==0){
+  	var postdata={
+  		guide:this.data.guide2
+  	}
+  	app.req('getsend_comment',postdata,'POST',function(backsign,backdata){
+  		isscrolling2=0;
+  		if(backsign==1){
+  			if(sign==0){
 		            var now_sends=that.data.sends;
 		        }else{
 		        	var now_sends=[];
 		        }
-		        var new_sends=now_sends.concat(res.data.comments);
+		        var new_sends=now_sends.concat(backdata.data.data.comments);
 		        that.setData({
 		          sends:new_sends,
-		          guide2:res.data.guide.updated_at
+		          guide2:backdata.data.data.guide.updated_at
 		        })
-	        }else if(res.data.code==404){
-	        	wx.showToast({
+  		}else if(backsign==4){
+  			wx.showToast({
 				  title: '到底啦',
 				  icon: 'success',
 				  duration: 1200
@@ -219,28 +192,15 @@ Page({
 				that.setData({
 					isdone2:1
 				})
-	        }else{
-	        	wx.showModal({
+		}else{
+			wx.showModal({
 	        		title:'抱歉',
 	        		content:'请稍后再试',
 	        		success:function(){}
 	        	})
-	        }
-	        wx.stopPullDownRefresh()
-	        
-	      },
-	      fail:function(err){
-	      	isscrolling2=0;
-	      	wx.hideLoading()
-	      	wx.showModal({
-	    		title:'抱歉',
-	    		content:'请稍后再试',
-	    		success:function(){}
-	    	})
-	    	wx.stopPullDownRefresh()
-	    	
-	      }
-	    })
+		}
+		wx.stopPullDownRefresh()
+  	})
   }
 })
 

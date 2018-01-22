@@ -28,3 +28,5 @@
 navigator{float: left;}
 #sendmail{position: relative;float: left;width: 650rpx;margin-bottom: 20rpx;background-color: #fff;padding: 30rpx 50rpx;color: #888;font-size: 28rpx;text-align: left;line-height: 60rpx;}
 #sendmail image{width: 60rpx;height: 60rpx;float: right;}
+
+#sign{width: 680rpx;padding: 0rpx 35rpx;font-size: 28rpx;color: #999;text-align: center;line-height: 80rpx;margin: 0 20rpx 6rpx 0rpx}

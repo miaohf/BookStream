@@ -2,10 +2,10 @@ var app = getApp()
 const apiUrl = require('../../../config').apiUrl;
 Page({
   data: {
-   		name:app.globalData.userInfo.nickName,
-   		avatar:app.globalData.userInfo.avatarUrl,
+   		name:'',
+   		avatar:'',
    		title:'设置',
-   		onlycity:app.globalData.onlycity,
+   		onlycity:'',
    		relocatename:0,
    		setavatar:0,
    		sign:''
@@ -51,9 +51,10 @@ Page({
 	      success: function(res){
 	      	console.log(res)
 	      	wx.hideLoading()
-	        if((JSON.parse(res.data).code)&&(JSON.parse(res.data).code==200)){
-	        	self.setnameandsign(e.detail.value.nickname,e.detail.value.sign,JSON.parse(res.data).filename)
-	        }else if((JSON.parse(res.data).code)&&(JSON.parse(res.data).code==500)){
+	        if((res.statusCode)&&(res.statusCode==200)){
+	        	console.log(JSON.parse(res.data).data)
+	        	self.setnameandsign(e.detail.value.nickname,e.detail.value.sign,JSON.parse(res.data).data.filename)
+	        }else if((res.statusCode)&&(res.statusCode==500)){
 	        	wx.showToast({
 		    		title: "失败！图片太大了",
 		    		icon: "loading",//仅支持success或者loading
@@ -80,27 +81,19 @@ Page({
   	wx.showLoading({
       title: '正在提交',
     });
-	wx.request({
-	  //必需
-	  url: apiUrl+'setting', 
-	  method:'POST',
-	  data: {
-	      openid:app.globalData.openid,
-	      name:name,
+    var postdata={
+    	name:name,
 	      sign:sign,
 	      avatar:avatar
-	  },
-	  header: {
-	      'Content-Type': 'application/json'
-	  },
-	  success: function(res) {
-	    console.log(res)
-	    wx.hideLoading()
-	    if(res.data.code==200){
-	    	//修改globaldata,改变主页头像
+    }
+    app.req('setting',postdata,'POST',function(backsign,backdata){
+    	wx.hideLoading()
+    	if(backsign==1){
+			//修改globaldata,改变主页头像
 	    	app.globalData.userInfo.nickName=name
+        console.log(backdata.data)
 	    	if(self.data.setavatar!=0){
-		    	app.globalData.userInfo.avatarUrl=self.data.setavatar
+		    	app.globalData.userInfo.avatarUrl=backdata.data.data.avatar
 		    }
 	    	wx.setStorageSync('userInfo', app.globalData.userInfo)
 	    	var pages=getCurrentPages();
@@ -124,25 +117,14 @@ Page({
 	                })
 	    		}
 	    	});
-	    }else{
-	    	wx.showToast({
+    	}else{
+    		wx.showToast({
 	    		title: "修改失败",
 	    		icon: "loading",//仅支持success或者loading
 	    		duration: 1000
 	    	});
-	    }
-	    
-	  },
-	  fail: function(res) {
-	    console.log(res)
-	    wx.hideLoading()
-	    wx.showToast({
-    		title: "修改失败",
-    		icon: "loading",//仅支持success或者loading
-    		duration: 1000
-    	});
-	  }
-	})
+    	}
+    })
   },
   chooseimg:function(){
   	var that=this

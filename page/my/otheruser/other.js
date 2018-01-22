@@ -16,69 +16,49 @@ Page({
     wx.showLoading({
           title: '正在加载',
       });
-    wx.request({
-      url:apiUrl+'otheruser',
-      method:'POST',
-      data:{
-        openid:options.openid
-      },
-      header:{
-        'content-type':'application/json'
-      },
-      success:function(res){
-        console.log(res)
-        wx.hideLoading()
-        if(res.data.code==200){
-          that.setData({
-            'ta.avatar':res.data.ta.avatar,
-            'ta.name':res.data.ta.name,
-            'ta.ordernum':res.data.ta.ordernum,
-            'ta.booknum':res.data.ta.booknum,
+    var postdata={
+      openid:options.openid
+    }
+    app.req('otheruser',postdata,'POST',function(backsign,backdata){
+      
+      if(backsign==1){
+        that.setData({
+            'ta.avatar':backdata.data.data.ta.avatar,
+            'ta.name':backdata.data.data.ta.name,
+            'ta.ordernum':backdata.data.data.ta.ordernum,
+            'ta.booknum':backdata.data.data.ta.booknum,
             'ta.openid':options.openid,
-            'ta.gender':res.data.ta.gender
+            'ta.gender':backdata.data.data.ta.gender,
+            'ta.sign':backdata.data.data.ta.sign
           })
-        }else if(res.data.code==201){
-          wx.showModal({
+      }else if(backsign==4){
+        wx.showModal({
             title:'抱歉',
             content:'不存在该用户',
             success:function(){}
           })
-        }
-        
-      },
-      fail:function(err){
-        console.log(err)
-        wx.hideLoading()
+      }else{
         wx.showModal({
             title:'抱歉',
             content:'获取用户信息失败，请稍后退出本页面重试',
             success:function(){}
           })
       }
-    });
-
-
-    wx.request({
-      url: apiUrl+'mybook', 
-        method:'POST',
-        data: {
-          openid:options.openid
-        },
-        
-        header: {
-            'content-type': 'application/json'
-        },
-        success: function(res) {
-          console.log(res)
-          that.setData({
-            books:res.data.books,
-            num:res.data.num
-          })
-        },
-        fail:function(err){
-          console.log(err)
-        }
+      wx.hideLoading()
     })
+ 
+
+    app.req('mybook',postdata,'POST',function(backsign,backdata){
+      if(backsign==1){
+        that.setData({
+            books:backdata.data.data.books,
+            num:backdata.data.data.num
+          })
+      }else{
+
+      }
+    })
+
   },
   onShareAppMessage: function (res) {
     if (res.from === 'button') {

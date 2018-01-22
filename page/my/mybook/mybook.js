@@ -95,22 +95,12 @@ Page({
           title: '正在加载',
     });
     var that=this
-    wx.request({
-      url: apiUrl+'delbook', 
-        method:'POST',
-        data: {
-          openid:app.globalData.openid,
-          id:this.data.chosenid
-        },
-        
-        header: {
-            'content-type': 'application/json'
-        },
-        success: function(res) {
-          console.log(res)
-          wx.hideLoading()
-          if(res.data.code==200){
-            that.hideoperatebox()
+    var postdata={
+      id:this.data.chosenid
+    }
+    app.req('delbook',postdata,'POST',function(backsign,backdata){
+      if(backsign==1){
+        that.hideoperatebox()
             wx.showToast({
               title: '成功',
               icon: 'success',
@@ -121,22 +111,19 @@ Page({
             var prepage=pages[pages.length-2]
             var my=prepage.data.my
             var mybook=my
-            mybook.booknum=res.data.booknum
+            mybook.booknum=backdata.data.data.booknum
             prepage.setData({
               my:mybook
             })
+          }else{
+            wx.hideLoading()
+            that.hideoperatebox()
+            wx.showToast({
+              title: '失败',
+              icon: 'loading',
+              duration: 1000
+            })
           }
-        },
-        fail:function(err){
-          console.log(err)
-          wx.hideLoading()
-          that.hideoperatebox()
-          wx.showToast({
-            title: '失败',
-            icon: 'loading',
-            duration: 1000
-          })
-        }
     })
   }
 })

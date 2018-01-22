@@ -52,58 +52,39 @@ Page({
   		wx.showLoading({
           title: '正在提交',
       	})
-  		wx.request({
-	  	  url: apiUrl+'setbookstatus',
-	  	  method:'POST',
-	  	  data: {
-	  	  	bookid:id,
-	  	  	status:status
-	  	  },
-	  	  header: {
-	  	      'Content-Type': 'application/json'
-	  	  },
-	  	  success: function(res) {
-	  	  	wx.hideLoading()
-	  	    console.log(res)
-	  	    if(res.data.code==200){
-	  	    	wx.showModal({
-		  	    	title: "成功",
-		  	    	content: "提交成功",
-		  	    	success: function(res) {
-		  	    		var pages=getCurrentPages();
-				        var prepage=pages[pages.length-2]
-				        var books=prepage.data.books
-				        books[index].status=status;
-				        prepage.setData({
-				          books:books
-				        })
-				        wx.navigateBack({
-				        	delta: 1
-				        });
-		  	    	}
-		  	    });
-	  	    }else{
-	  	    	wx.showModal({
-		  	    	title: "抱歉",
-		  	    	content: "提交失败，请稍后再试",
-		  	    	success: function(res) {
-		  	    		
-		  	    	}
-		  	    });
-	  	    }
-	  	  },
-	  	  fail: function(res) {
-	  	  	wx.hideLoading()
-	  	    console.log(res)
-	  	    wx.showModal({
-	  	    	title: "抱歉",
-	  	    	content: "提交失败，请稍后再试",
-	  	    	success: function(res) {
-	  	    		
-	  	    	}
-	  	    });
-	  	  }
-	  	})
+      var postdata={
+        bookid:id,
+        status:status
+      }
+      app.req('setbookstatus',postdata,'POST',function(backsign,backdata){
+        if(backsign==1){
+          wx.showModal({
+              title: "成功",
+              content: "提交成功",
+              success: function(res) {
+                var pages=getCurrentPages();
+                var prepage=pages[pages.length-2]
+                var books=prepage.data.books
+                books[index].status=status;
+                prepage.setData({
+                  books:books
+                })
+                wx.navigateBack({
+                  delta: 1
+                });
+              }
+            });
+        }else{
+          wx.showModal({
+              title: "抱歉",
+              content: "提交失败，请稍后再试",
+              success: function(res) {
+                
+              }
+            });
+        }
+        wx.hideLoading()
+      })
   	}
   	
   },

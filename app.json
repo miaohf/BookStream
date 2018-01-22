@@ -1,7 +1,7 @@
 {
   "pages": [
     "page/exchange/index",
-
+    "page/drift/index",
 
     "page/comment/index",
 
@@ -44,7 +44,12 @@
       "pagePath": "page/exchange/index",
       "iconPath": "image/bookshelf0.png",
       "selectedIconPath": "image/bookshelf.png",
-      "text": "书架"
+      "text": "借阅"
+    },{
+      "pagePath": "page/drift/index",
+      "iconPath": "image/drift0.png",
+      "selectedIconPath": "image/drift.png",
+      "text": "漂流"
     }, {
       "pagePath": "page/my/index",
       "iconPath": "image/my0.png",

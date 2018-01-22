@@ -16,7 +16,7 @@
                     <text>
                     <block wx:for="{{item.tags}}" wx:key="{{index}}">{{item}}/</block>
                     </text>
-                    <text>\n共借出5次 评分 {{item.average}}  {{item.cityname}}</text>
+                    <text>\n共借出{{item.borrowtimes}}次 评分{{item.average}}分 {{item.likenum}}人点赞  {{item.cityname}}</text>
                 </view>
                 <image class="user-img" src="{{item.user_avatar}}"></image>
                 <view wx:if="{{item.status==1}}" class="book_free"></view>

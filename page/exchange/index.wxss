@@ -38,3 +38,6 @@ swiper{
 .searchbar_input{background-color:#fff;width:80%;margin:0;border-radius:19px;height:38px;line-height:38px;padding:0 10%;font-size:0.9em}
 .swiper-item-img{width:100%;height:100%}
 #homepage_banner{}
+
+#tabit{width: 750rpx;position: relative;background-color: #fff;float: left;}
+.tabs{width: 375rpx;font-size: 32rpx;color: #666;text-align: center;float: left;padding: 30rpx 0;}

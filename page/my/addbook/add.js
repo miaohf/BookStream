@@ -11,8 +11,8 @@ Page({
       addbook:'',
       array: [ '文学','流行','文化','生活','经营','科技','其他'],
       index: 0,
-      array2: [ '放上来晒命,不借','允许借阅'],
-      index2: 1,
+      array2: [ '对外借阅','图书漂流'],
+      index2: 0,
       hidden_needtoknow:false
     },
   onLoad: function(options) {
@@ -30,29 +30,28 @@ Page({
     wx.scanCode({
       onlyFromCamera: true,
       success: (res) => {
-        console.log(res.result)
         var that=this
         wx.showLoading({
           title: '正在加载',
         });
-        wx.request({
-          url: apiUrl+'scanbook', 
-          method:'POST',
-          data: {
-            isbn:res.result
-          },
-          header: {
-              'content-type': 'application/json'
-          },
-          success: function(res1) {
-            console.log(res1)
-            wx.hideLoading()
-            if(res1.data.id){
+        var postdata={
+          isbn:res.result
+        }
+        app.req('scanbook',postdata,'POST',function(backsign,backdata){
+          if(backsign==-1){
+            wx.showModal({
+                title: '查询本书失败',
+                content: '请稍后再试',
+                success: function(res) {
+                }
+              })
+          }else{
+            if(backdata.data.id){
               that.setData({
-                'book.title':res1.data.title,
-                'book.isbn':res1.data.isbn10+'/'+res1.data.isbn13,
-                'book.img':res1.data.images['large'],
-                addbook:res1.data
+                'book.title':backdata.data.title,
+                'book.isbn':backdata.data.isbn10+'/'+backdata.data.isbn13,
+                'book.img':backdata.data.images['large'],
+                addbook:backdata.data
               })
             }else{
               wx.showModal({
@@ -62,18 +61,10 @@ Page({
                 }
               })
             }
-          },
-          fail:function(err){
-            wx.hideLoading()
-            console.log(err)
-            wx.showModal({
-              title: '查询本书失败',
-              content: '请稍后再试',
-              success: function(res) {
-              }
-            })
           }
+          wx.hideLoading()
         })
+
       }
     })
   },
@@ -92,11 +83,8 @@ Page({
       wx.showLoading({
           title: '正在加载',
       });
-      wx.request({
-        url: apiUrl+'addbook', 
-        method:'POST',
-        data: {
-          isbn10:that.data.addbook.isbn10,
+      var postdata={
+        isbn10:that.data.addbook.isbn10,
           isbn13:that.data.addbook.isbn13,
           images_s:that.data.addbook.images.small,
           images_m:that.data.addbook.images.medium,
@@ -118,17 +106,12 @@ Page({
           citycode:app.globalData.citycode,
           cityname:app.globalData.cityname,
           average:that.data.addbook.rating.average,
-          numRaters:that.data.addbook.rating.numRaters
-        },
-        
-        header: {
-            'content-type': 'application/json'
-        },
-        success: function(res) {
-          console.log(res)
-          wx.hideLoading()
-          if(res.data.code==200){
-            wx.showToast({
+          numRaters:that.data.addbook.rating.numRaters,
+          drift:that.data.index2
+      }
+      app.req('addbook',postdata,'POST',function(backsign,backdata){
+        if(backsign==1){
+          wx.showToast({
               title: '成功',
               icon: 'success',
               duration: 2000,
@@ -137,7 +120,7 @@ Page({
                  var prevPage = pages[pages.length - 2]; //上一个页面
                  var oribooks=prevPage.data.books;
                  var orinum=prevPage.data.num;
-                 var newbooks=oribooks.concat(res.data.book);
+                 var newbooks=oribooks.concat(backdata.data.data);
                  console.log(newbooks)
                  prevPage.setData({
                   books: newbooks,
@@ -154,36 +137,24 @@ Page({
                  wx.navigateBack();
               }
             })
-          }else if(res.data.code==201){
-            wx.showModal({
+        }else if(backsign==2){
+           wx.showModal({
               title: '添加失败',
               content: '同一本书最多只能添加3本哦',
               success: function(res) {
 
               }
             })
-          }else{
-            wx.showModal({
+         }else{
+          wx.showModal({
               title: '添加失败',
               content: '请稍后再试',
               success: function(res) {
 
               }
             })
-          }
-          
-        },
-        fail:function(err){
-          wx.hideLoading()
-          console.log(err)
-          wx.showModal({
-            title: '添加失败',
-            content: '请稍后再试',
-            success: function(res) {
-
-            }
-          })
-        }
+         }
+        wx.hideLoading()
       })
     }
     
@@ -196,8 +167,15 @@ Page({
   },
   bindPickerChange2: function(e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
-    if(e.detail.value==0){
+    if(e.detail.value==1){
       var hidden_needtoknow=true;
+      wx.showModal({
+        title: "确定",
+        content: "选择图书漂流将放弃您的书本所有权，漂流收取者将拥有这本书，您确定选择图书漂流吗？",
+        showCancel: true,
+        confirmText: "确定",
+        confirmColor: "#3CC51F"
+      });
     }else{
       var hidden_needtoknow=false;
     }
