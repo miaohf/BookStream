@@ -23,7 +23,7 @@
 
   </view>
   <view id="driftBox" style="padding: 100rpx 0">
-    <image style="" mode="" src="../../image/haimianbaobao.png" binderror="" bindload="" style="width: 360rpx;height:360rpx;margin: 0 195rpx;"></image>
+    <image style="" mode="" src="../../image/haimianbaobao.png" bindtap="togetdrift" style="width: 360rpx;height:360rpx;margin: 0 195rpx;"></image>
     <view style="width: 750rpx;text-align: center;font-size: 28rpx;color: #999;line-height: 40rpx;">
       <text> 点击海绵宝宝\n </text>    
       <text> 看看今天有没有书漂流到您的海滩</text>    
