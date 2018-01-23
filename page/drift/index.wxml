@@ -1,30 +1,28 @@
 <view class="contain">
-  <view id="drifBook">
-    <view id="theBook" wx:if="{{getBook==1}}">
+  <view id="drifBook" >
+    <view id="theBook" wx:if="{{getBook==1}}" animation="{{animationData}}">
       <navigator url="/page/exchange/book/book?id={{theBook.id}}" class="navigator">
         <view class="kind-list-item">
-              <view id="{{theBook.id}}" class="kind-list-item-hd " bindtap="">
-                <image class="kind-list-img" src="{{theBook.image_m}}"></image>
+              <view id="{{theBook.id}}" class="kind-list-item-hd " bindtap="" style="padding: 20rpx 0 10rpx 0">
+                <image class="kind-list-img" src="{{theBook.image_m}}" style="margin: 0 28rpx"></image>
                 <view class="kind-list-text">
-
                     <text>{{theBook.name}}\n</text>
                     <text>作者：{{theBook.author}}\n</text>
-                    <text>
-                    <block wx:for="{{theBook.tags}}" wx:key="{{index}}">{{item}}/</block>
-                    </text>
-                    <text>\n共借出{{theBook.borrowtimes}}次 评分 {{theBook.average}}  {{theBook.cityname}}</text>
+                    <button type="primary" size="mini" bindtap="default" style="margin-right: 30rpx"> 果断收下 </button>
+                    <button type="warn" size="mini" bindtap="default"> 再捞捞看 </button>
+                    <image class="kind-list-img1" src="{{theBook.user.avatar}}"></image>
                 </view>
-                <image class="user-img" src="{{theBook.user_avatar}}"></image>
               </view>
         </view>
       </navigator>
+      <view id="congrat"> {{ '恭喜你捞起一本漂流书' }} </view>    
     </view>
     <!-- 点击海绵宝宝有声音并显示您今天已点击几次海绵宝宝 -->
 
   </view>
-  <view id="driftBox" style="padding: 100rpx 0">
+  <view id="driftBox" style="padding: 100rpx 0" wx:if="{{getBook==0}}">
     <image style="" mode="" src="../../image/haimianbaobao.png" bindtap="togetdrift" style="width: 360rpx;height:360rpx;margin: 0 195rpx;"></image>
-    <view style="width: 750rpx;text-align: center;font-size: 28rpx;color: #999;line-height: 40rpx;">
+    <view id="baobao">
       <text> 点击海绵宝宝\n </text>    
       <text> 看看今天有没有书漂流到您的海滩</text>    
     </view>

@@ -3,7 +3,8 @@ const app=getApp()
 
 Page({
   data: {
-    
+    getBook:0,
+    theBook:[]
   },
   onLoad: function() {
     
@@ -16,8 +17,23 @@ Page({
     app.req('getdrift','','POST',function(backsign,backdata){
       wx.hideLoading()
       if(backsign==1){
+        that.setData({
+          getBook:1,
+          theBook:backdata.data.data
+        })
+        var animation = wx.createAnimation({
+          duration: 1000,
+          timingFunction: 'ease',
+        })
         
+        that.animation = animation
+        animation.translateY(230).step()
+        that.setData({
+          animationData:animation.export()
+        })
+        console.log(that.data)
       }
+
     })
 
   }

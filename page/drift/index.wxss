@@ -2,8 +2,14 @@
 
 .kind-list-item-hd{position: relative;}
 .kind-list-img{width: 110rpx;height: 160rpx}
+.kind-list-item{width: 650rpx;padding: 0 20rpx;margin: 0}
 .kind-list-text{width: 350rpx;padding-left: 40rpx;line-height: 40rpx}
 .kind-list-text text{font-size: 22rpx;color:#333;}
 .kind-list-text text:first-child{font-size: 26rpx;color:#3377aa;}
 .user-img{width: 70rpx;height: 70rpx;border-radius: 35rpx;display: block;}
 .user_part{width: 100rpx;background-color: #555}
+button[size="mini"]{padding: 12rpx 40rpx;border:none;margin-top: 36rpx}
+.kind-list-img1{position: absolute;z-index: 99;right: 10rpx;top: 20rpx;width: 80rpx;height: 80rpx;border-radius: 50%;}
+#baobao{width: 750rpx;text-align: center;font-size: 28rpx;color: #999;line-height: 40rpx;}
+#theBook{margin-top: -200px;}
+#congrat{width: 750rpx;text-align: center;font-size: 26rpx;color: #999;margin-top: 20rpx}
